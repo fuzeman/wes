@@ -1,6 +1,6 @@
 {
   "name": "wes",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "WebExtension Shim (Alpha)",
   "keywords": ["webextensions", "webextension", "shim"],
   "homepage": "https://github.com/fuzeman/wes",
