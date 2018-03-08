@@ -1,0 +1,56 @@
+{
+  "name": "wes",
+  "version": "1.0.0-alpha.1",
+  "description": "WebExtension Shim (Alpha)",
+  "keywords": ["webextensions", "webextension", "shim"],
+  "homepage": "https://github.com/fuzeman/wes",
+  "bugs": {
+    "url" : "https://github.com/fuzeman/wes/issues"
+  },
+  "license": "CC0-1.0",
+  "author": "Dean Gardiner <me@dgardiner.net>",
+  "main": "index.js",
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/fuzeman/wes.git"
+  },
+  "dependencies": {
+    "bowser": "^1.9.2",
+    "lodash": "^4.17.5",
+    "mdn-browser-compat-data": "0.0.26"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.0.0-beta.32",
+    "@babel/core": "7.0.0-beta.32",
+    "@babel/plugin-proposal-class-properties": "7.0.0-beta.32",
+    "@babel/plugin-proposal-object-rest-spread": "7.0.0-beta.32",
+    "@babel/polyfill": "7.0.0-beta.32",
+    "@babel/preset-env": "7.0.0-beta.32",
+    "@babel/preset-react": "7.0.0-beta.32",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.18.0",
+    "eslint-plugin-babel": "^4.1.2",
+    "eslint-plugin-import": "^2.7.0",
+    "jasmine": "^2.8.0",
+    "jasmine-promises": "^0.4.1",
+    "nyc": "^11.4.1"
+  },
+  "scripts": {
+    "build": "babel src --out-dir lib",
+    "coverage:jasmine": "nyc --all npm run jasmine",
+    "coverage:upload": "nyc report --reporter=text-lcov | coveralls",
+    "jasmine": "jasmine JASMINE_CONFIG_PATH=jasmine.json",
+    "lint": "eslint src/",
+    "prepublish": "npm run build",
+    "test": "npm run jasmine && npm run lint",
+    "test:develop": "npm run build && npm run coverage:jasmine && npm run lint"
+  },
+  "nyc": {
+    "exclude": [
+      "**/*spec.js",
+      "lib/test",
+      "src"
+    ]
+  }
+}
