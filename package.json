@@ -37,20 +37,20 @@
     "nyc": "^11.4.1"
   },
   "scripts": {
-    "build": "babel src --out-dir lib",
+    "build": "babel src --out-dir .",
     "coverage:jasmine": "nyc --all npm run jasmine",
     "coverage:upload": "nyc report --reporter=text-lcov | coveralls",
     "jasmine": "jasmine JASMINE_CONFIG_PATH=jasmine.json",
     "lint": "eslint src/",
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
     "test": "npm run jasmine && npm run lint",
     "test:develop": "npm run build && npm run coverage:jasmine && npm run lint"
   },
   "nyc": {
     "exclude": [
       "**/*spec.js",
-      "lib/test",
-      "src"
+      "src",
+      "test"
     ]
   }
 }
