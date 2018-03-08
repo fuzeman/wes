@@ -34,14 +34,30 @@ class Listener {
         return this.$api.$target[this.$name];
     }
 
+    /**
+     * Add a listener to this event.
+     *
+     * @param {Function} listener Listener to add
+     */
     addListener(listener) {
         return this.$listener.addListener(listener);
     }
 
+    /**
+     * Check whether `listener` is registered for this event.
+     *
+     * @param {Function} listener Listener
+     * @return {Boolean} true if it is listening, false otherwise.
+     */
     hasListener(listener) {
         return this.$listener.hasListener(listener);
     }
 
+    /**
+     * Stop listening to this event.
+     *
+     * @param {Function} listener Listener to remove
+     */
     removeListener(listener) {
         return this.$listener.removeListener(listener);
     }
