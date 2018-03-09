@@ -3,6 +3,34 @@ import PermissionsCompatibility from 'mdn-browser-compat-data/webextensions/api/
 import Base from './core/base';
 
 
+/**
+ * A Permissions object represents a collection of permissions.
+ *
+ * @see {@link https://developer.chrome.com/extensions/permissions#type-Permissions}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/permissions/Permissions}
+ *
+ * @typedef {Object} Permissions~Permissions
+ *
+ * @property {String[]} [origins]     - List of origin permissions.
+ * @property {String[]} [permissions] - List of named permissions (does not include hosts or origins).
+ */
+
+/**
+ * Fired when the extension is granted new permissions.
+ *
+ * @name added
+ * @function
+ * @param {Permissions~Permissions} permissions Permissions that were granted.
+ */
+
+/**
+ * Fired when some permissions are removed from the extension.
+ *
+ * @name removed
+ * @function
+ * @param {Permissions~Permissions} permissions Permissions that were removed.
+ */
+
 /*
  * Enables extensions to request extra permissions at runtime, after they have been installed.
  *
@@ -39,6 +67,9 @@ import Base from './core/base';
  * list them in "optional_permissions". After this, you can request any permissions that were
  * included in "optional_permissions". Requests may only be made in the handler for a user
  * action (for example, a click handler).
+ *
+ * @see {@link https://developer.chrome.com/extensions/permissions}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/permissions}
  */
 export class Permissions extends Base {
     static Title = 'Permissions';
@@ -49,7 +80,10 @@ export class Permissions extends Base {
     /**
      * Fired when the extension is granted new permissions.
      *
-     * @returns Listener
+     * @see {@link https://developer.chrome.com/extensions/permissions#event-onAdded}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/permissions/onAdded}
+     *
+     * @returns {Listener} Listener that emits {@link added} events
      */
     get onAdded() {
         return this.$listener('onAdded');
@@ -58,7 +92,10 @@ export class Permissions extends Base {
     /**
      * Fired when some permissions are removed from the extension.
      *
-     * @returns Listener
+     * @see {@link https://developer.chrome.com/extensions/permissions#event-onRemoved}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/permissions/onRemoved}
+     *
+     * @returns {Listener} Listener that emits {@link removed} events
      */
     get onRemoved() {
         return this.$listener('onRemoved');
@@ -74,8 +111,13 @@ export class Permissions extends Base {
      * the extension currently has all the given permissions. For host permissions, if the extension's permissions
      * pattern-match the permissions listed in origins, then they are considered to match.
      *
-     * @param {object} permissions Permissions {origins, permissions}
-     * @returns Promise
+     * @see {@link https://developer.chrome.com/extensions/permissions#method-contains}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/permissions/contains}
+     *
+     * @param {...Permissions~Permissions} permissions Permissions to check
+     *
+     * @returns {Promise} A `Promise` that will be fulfilled with `true` if the extension already has all the
+     * permissions listed in the `permissions` argument, or `false` otherwise.
      */
     contains(permissions) {
         return this.$promise('contains', permissions);
@@ -84,9 +126,13 @@ export class Permissions extends Base {
     /**
      * Retrieve a `permissions` object containing all the permissions currently granted to the extension.
      *
-     * This is an asynchronous function that returns a Promise.
+     * @see {@link https://developer.chrome.com/extensions/permissions#method-getAll}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/permissions/getAll}
      *
-     * @returns Promise
+     * @returns {Promise} A `Promise` that will be fulfilled with Object { origins, permissions } containing all
+     * the permissions currently granted to the extension. This includes all permissions the extension has
+     * listed in the "permissions" key, and any permissions listed in "optional_permissions" that the
+     * extension has been granted by calling {@link request}.
      */
     getAll() {
         return this.$promise('getAll');
@@ -99,10 +145,13 @@ export class Permissions extends Base {
      * or a permissions property, which is an array of API permissions, or both. Permissions must come from the
      * set of permissions defined in the "optional_permissions" manifest.json key.
      *
-     * This is an asynchronous function that returns a Promise.
+     * @see {@link https://developer.chrome.com/extensions/permissions#method-remove}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/permissions/remove}
      *
-     * @param {object} permissions Permissions {origins, permissions}
-     * @returns Promise
+     * @param {...Permissions~Permissions} permissions Permissions to remove
+     *
+     * @returns {Promise} A `Promise` that will be fulfilled with `true` if the permissions listed in the
+     * `permissions` argument were removed, or `false` otherwise.
      */
     remove(permissions) {
         return this.$promise('remove', permissions);
@@ -133,15 +182,19 @@ export class Permissions extends Base {
      *
      * Any permissions granted are retained by the extension, even over upgrade and disable/enable cycling.
      *
-     * This is an asynchronous function that returns a Promise.
+     * @see {@link https://developer.chrome.com/extensions/permissions#method-request}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/permissions/request}
      *
-     * @param {object} permissions Permissions {origins, permissions}
-     * @returns Promise
+     * @param {...Permissions~Permissions} permissions Permissions to request
+     *
+     * @returns {Promise} A `Promise` that will be fulfilled with `true` if the extension was granted all the
+     * permissions listed in the `permissions` argument, or `false` otherwise.
      */
     request(permissions) {
         return this.$promise('request', permissions);
     }
 }
+
 export {
     PermissionsCompatibility
 };
