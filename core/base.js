@@ -121,6 +121,20 @@ export default class Base {
             return `Unknown method: ${this.constructor.Name}.${name}`;
         }
 
+        // Retrieve status
+        let status = {
+            deprecated: false,
+            experimental: false,
+            standard_track: false
+        };
+
+        if(!IsNil(compat.status)) {
+            status = {
+                ...status,
+                ...compat.status
+            };
+        }
+
         // Retrieve browser support information
         let support = compat.support[this.$browser.name];
 
@@ -128,10 +142,22 @@ export default class Base {
             return `Unknown browser: ${this.$browser.name}`;
         }
 
+        // Not Implemented
+        if(support.version_added === false) {
+            return 'Not Implemented';
+        }
+
+        // Deprecated
+        if(status.deprecated) {
+            return 'Deprecated';
+        }
+
+        // Available at unknown version
         if(support.version_added === true) {
             return null;
         }
 
+        // Implemented in future version
         if(Bowser.compareVersions([this.$browser.version, support.version_added]) >= 0) {
             return null;
         }

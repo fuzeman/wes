@@ -30,6 +30,18 @@ const TestCompatibility = {
                         }
                     }
                 },
+                onUnsupported: {
+                    __compat: {
+                        support: {
+                            chrome: {
+                                version_added: false
+                            },
+                            firefox: {
+                                version_added: false
+                            }
+                        }
+                    }
+                },
                 success: {
                     __compat: {
                         support: {
@@ -240,7 +252,7 @@ describe('Base', () => {
 
             it('should raise an exception on unsupported browsers', () => {
                 expect(() => chrome.onUnsupported.addListener(() => false)).toThrowError(
-                    Error, 'Test API doesn\'t support "onUnsupported" (Unknown method: test.onUnsupported)'
+                    Error, 'Test API doesn\'t support "onUnsupported" (Not Implemented)'
                 );
             });
         });
@@ -362,7 +374,7 @@ describe('Base', () => {
 
             it('should raise an exception on unsupported browsers', () => {
                 expect(() => firefox.onUnsupported.addListener(() => false)).toThrowError(
-                    Error, 'Test API doesn\'t support "onUnsupported" (Unknown method: test.onUnsupported)'
+                    Error, 'Test API doesn\'t support "onUnsupported" (Not Implemented)'
                 );
             });
         });
