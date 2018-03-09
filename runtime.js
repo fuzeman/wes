@@ -35,6 +35,8 @@ import Base from './core/base';
  * @property {Boolean} [includeTlsChannelId] - Whether the TLS channel ID should be passed to `onConnectExternal`.
  */
 
+// region Platform
+
 /**
  * Platform Information.
  *
@@ -81,6 +83,10 @@ export const PlatformOs = {
     win: 'win'
 };
 
+// endregion
+
+// region Request Update Check
+
 /**
  * Request Update Check Result.
  *
@@ -114,6 +120,8 @@ export const RequestUpdateCheckStatus = {
     update_available: 'update_available'
 };
 
+// endregion
+
 /**
  * {@link Runtime#sendMessage} Options.
  *
@@ -122,6 +130,8 @@ export const RequestUpdateCheckStatus = {
  * @property {Boolean} [includeTlsChannelId] - Whether the TLS channel ID should be passed to `onMessageExternal`.
  * @property {Boolean} [toProxyScript]       - If the message is intended for a PAC file loaded using the proxy API.
  */
+
+// region Events
 
 /**
  * Fired when the other end of the {@link Port} has called {@link Port#disconnect}.
@@ -320,6 +330,8 @@ export const OnRestartRequiredReason = {
  *
  * @property {String} [version] - Version of the update.
  */
+
+// endregion
 
 /**
  * An object containing information about the sender of a message or connection request; this is passed to
@@ -563,6 +575,8 @@ export class Runtime extends Base {
     static Name = 'runtime';
     static Compatibility = RuntimeCompatibility;
 
+    // region Properties
+
     /**
      * The ID of the extension/app.
      *
@@ -586,6 +600,10 @@ export class Runtime extends Base {
     get lastError() {
         return this.$property('lastError');
     }
+
+    // endregion
+
+    // region Events
 
     /**
      * Fired when an update for the browser is available, but isn't installed immediately because a
@@ -717,6 +735,10 @@ export class Runtime extends Base {
     get onUpdateAvailable() {
         return this.$listener('onUpdateAvailable');
     }
+
+    // endregion
+
+    // region Methods
 
     /**
      * Make a connection between different contexts inside the extension.
@@ -958,6 +980,8 @@ export class Runtime extends Base {
     setUninstallURL(url) {
         return this.$promise('setUninstallURL', url);
     }
+
+    // endregion
 }
 
 export {
