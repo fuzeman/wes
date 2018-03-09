@@ -334,6 +334,12 @@ export class MessageSender extends Base {
     static Name = 'runtime.MessageSender';
     static Compatibility = RuntimeCompatibility;
 
+    static Standard = [
+        // Properties
+        'tab',
+        'id'
+    ];
+
     constructor(instance, browser = null) {
         super(browser);
 
@@ -431,6 +437,20 @@ export class Port extends Base {
 
     static Name = 'runtime.Port';
     static Compatibility = RuntimeCompatibility;
+
+    static Standard = [
+        // Properties
+        'name',
+        'sender',
+
+        // Events
+        'onDisconnect',
+        'onMessage',
+
+        // Methods
+        'disconnect',
+        'postMessage'
+    ];
 
     constructor(instance, browser = null) {
         super(browser);
