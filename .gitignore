@@ -1,11 +1,9 @@
 /.babel
 /.nyc_output
 /build
-/core
+/lib
 /node_modules
-/test
 
 /package-lock.json
-/*.js
 
 *.iml
