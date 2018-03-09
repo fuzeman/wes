@@ -69,6 +69,8 @@ export default class Base {
     static Name = null;
     static Compatibility = null;
 
+    static Standard = [];
+
     constructor(browser = null) {
         this.$browser = browser || Browser;
     }
@@ -87,6 +89,10 @@ export default class Base {
         }
 
         return this.$namespace.runtime.lastError;
+    }
+
+    get $standard() {
+        return this.constructor.Standard;
     }
 
     get $target() {
@@ -189,7 +195,7 @@ export default class Base {
         }
 
         // Ensure target property exists
-        if(!IsNil(message)) {
+        if(this.$standard.indexOf(name) < 0 && !IsNil(message)) {
             throw new Error(`${this.constructor.Title} API doesn\'t support "${name}" (${message})`);
         }
 
