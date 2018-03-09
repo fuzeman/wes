@@ -2,17 +2,21 @@
   "name": "wes",
   "version": "1.0.0-alpha.3",
   "description": "WebExtension Shim (Alpha)",
-  "keywords": ["webextensions", "webextension", "shim"],
+  "keywords": [
+    "webextensions",
+    "webextension",
+    "shim"
+  ],
   "homepage": "https://github.com/fuzeman/wes",
   "bugs": {
-    "url" : "https://github.com/fuzeman/wes/issues"
+    "url": "https://github.com/fuzeman/wes/issues"
   },
   "license": "CC0-1.0",
   "author": "Dean Gardiner <me@dgardiner.net>",
   "main": "index.js",
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/fuzeman/wes.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fuzeman/wes.git"
   },
   "dependencies": {
     "bowser": "^1.9.2",
@@ -29,6 +33,9 @@
     "@babel/preset-react": "7.0.0-beta.32",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^7.2.3",
+    "babel-plugin-istanbul": "^4.1.5",
+    "babel-register": "^7.0.0-beta.3",
+    "cross-env": "^5.1.4",
     "eslint": "^4.18.0",
     "eslint-plugin-babel": "^4.1.2",
     "eslint-plugin-import": "^2.7.0",
@@ -38,20 +45,29 @@
   },
   "scripts": {
     "build": "babel . --out-dir lib --ignore lib,node_modules",
-    "coverage:jasmine": "nyc --all npm run jasmine",
-    "coverage:upload": "nyc report --reporter=text-lcov | coveralls",
+    "es6:coveralls": "nyc report --reporter=text-lcov | coveralls",
+    "es6:jasmine": "cross-env NODE_ENV=test nyc --all jasmine JASMINE_CONFIG_PATH=jasmine.es6.json",
+    "es6:lint": "eslint ./",
+    "es6:test": "npm run es6:jasmine && npm run es6:lint",
     "jasmine": "jasmine JASMINE_CONFIG_PATH=jasmine.json",
-    "lint": "eslint ./",
     "prepare": "npm run build",
-    "test": "npm run jasmine && npm run lint",
-    "test:develop": "npm run build && npm run coverage:jasmine && npm run lint"
+    "test": "npm run es6:test && npm run jasmine"
   },
   "nyc": {
+    "sourceMap": false,
+    "instrument": false,
+    "require": [
+      "babel-register"
+    ],
     "include": [
-      "lib/{**/,}*.js"
+      "{**/,}*.js"
     ],
     "exclude": [
-      "lib/{**/,}*.spec.js"
+      "{**/,}*.spec.js",
+
+      "lib",
+      "node_modules",
+      "test"
     ]
   }
 }
