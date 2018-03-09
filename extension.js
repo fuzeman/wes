@@ -56,18 +56,6 @@ export class Extension extends Base {
     static Compatibility = ExtensionCompatibility;
 
     /**
-     * The type of extension view.
-     *
-     * @see {@link https://developer.chrome.com/extensions/extension#type-ViewType}
-     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/extension/ViewType}
-     *
-     * @returns {{Notification: string, Popup: string, Tab: string}}
-     */
-    get ViewType() {
-        return ViewType;
-    }
-
-    /**
      * True for content scripts running inside incognito tabs, and for extension pages running
      * inside an incognito process. The latter only applies to extensions with 'split'
      * incognito_behavior.
