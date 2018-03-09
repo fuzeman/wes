@@ -25,13 +25,25 @@ class Listener {
             throw new Error(`${this.$api.constructor.Title} API is not available (${message})`);
         }
 
-        // Ensure listener exists
-        if(!IsNil(message)) {
+        // Retrieve target listener
+        let target = this.$api.$target[this.$name];
+
+        // Ensure target listener exists
+        if(IsNil(target)) {
+            if(IsNil(message)) {
+                throw new Error(`${this.$api.constructor.Title} API doesn\'t support "${this.$name}"`);
+            }
+
             throw new Error(`${this.$api.constructor.Title} API doesn\'t support "${this.$name}" (${message})`);
         }
 
+        // Log warnings
+        if(!IsNil(message)) {
+            console.warn(`[${this.$api.constructor.Name}.${this.$name}] ${message}`);
+        }
+
         // Return listener
-        return this.$api.$target[this.$name];
+        return target;
     }
 
     /**
