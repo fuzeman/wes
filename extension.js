@@ -200,7 +200,7 @@ export class Extension extends Base {
      * @returns {Promise} A `Promise` that will be fulfilled with a boolean
      */
     isAllowedIncognitoAccess() {
-        return this.$call('isAllowedFileSchemeAccess');
+        return this.$promise('isAllowedIncognitoAccess');
     }
 
     /**
