@@ -18,6 +18,9 @@ import Base from './core/base';
 /**
  * Fired when the extension is granted new permissions.
  *
+ * @see {@link https://developer.chrome.com/extensions/permissions#event-onAdded}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/permissions/onAdded}
+ *
  * @name added
  * @function
  * @param {Permissions~Permissions} permissions Permissions that were granted.
@@ -25,6 +28,9 @@ import Base from './core/base';
 
 /**
  * Fired when some permissions are removed from the extension.
+ *
+ * @see {@link https://developer.chrome.com/extensions/permissions#event-onRemoved}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/permissions/onRemoved}
  *
  * @name removed
  * @function

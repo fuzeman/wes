@@ -18,6 +18,8 @@ import Base from './core/base';
 /**
  * Browser Information.
  *
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/getBrowserInfo}
+ *
  * @typedef {Object} Runtime~BrowserInfo
  *
  * @property {String} [name]    - Browser Name (e.g. "Firefox")
@@ -28,6 +30,9 @@ import Base from './core/base';
 
 /**
  * Connection Information.
+ *
+ * @see {@link https://developer.chrome.com/extensions/runtime#method-connect}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/connect}
  *
  * @typedef {Object} Runtime~ConnectInfo
  *
@@ -40,6 +45,9 @@ import Base from './core/base';
 /**
  * Platform Information.
  *
+ * @see {@link https://developer.chrome.com/extensions/runtime#type-PlatformInfo}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/PlatformInfo}
+ *
  * @typedef {Object} Runtime~PlatformInfo
  *
  * @property {PlatformArch} [arch]          - The platform's processor architecture.
@@ -49,6 +57,9 @@ import Base from './core/base';
 
 /**
  * The machine's processor architecture.
+ *
+ * @see {@link https://developer.chrome.com/extensions/runtime#type-PlatformArch}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/PlatformArch}
  *
  * @enum {String}
  */
@@ -66,6 +77,9 @@ export const PlatformArch = {
 /**
  * The native client architecture. This may be different from arch on some platforms.
  *
+ * @see {@link https://developer.chrome.com/extensions/runtime#type-PlatformNaclArch}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/PlatformNaclArch}
+ *
  * @enum {String}
  */
 export const PlatformNaclArch = {
@@ -76,6 +90,9 @@ export const PlatformNaclArch = {
 
 /**
  * The operating system the browser is running on.
+ *
+ * @see {@link https://developer.chrome.com/extensions/runtime#type-PlatformOs}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/PlatformOs}
  *
  * @enum {String}
  */
@@ -106,6 +123,9 @@ export const PlatformOs = {
 /**
  * Request Update Check Result.
  *
+ * @see {@link https://developer.chrome.com/extensions/runtime#method-requestUpdateCheck}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/requestUpdateCheck}
+ *
  * @typedef {Object} Runtime~RequestUpdateCheck
  *
  * @property {RequestUpdateCheckStatus} [status]           - The platform's processor architecture.
@@ -115,6 +135,9 @@ export const PlatformOs = {
 /**
  * Request Update Check Details.
  *
+ * @see {@link https://developer.chrome.com/extensions/runtime#method-requestUpdateCheck}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/requestUpdateCheck}
+ *
  * @typedef {Object} Runtime~RequestUpdateCheckDetails
  *
  * @property {String} [version] - The update's version.
@@ -122,6 +145,9 @@ export const PlatformOs = {
 
 /**
  * Status of the call to {@link Runtime#requestUpdateCheck}.
+ *
+ * @see {@link https://developer.chrome.com/extensions/runtime#type-RequestUpdateCheckStatus}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/RequestUpdateCheckStatus}
  *
  * @enum {String}
  */
@@ -141,6 +167,9 @@ export const RequestUpdateCheckStatus = {
 /**
  * {@link Runtime#sendMessage} Options.
  *
+ * @see {@link https://developer.chrome.com/extensions/runtime#method-sendMessage}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/sendMessage}
+ *
  * @typedef {Object} Runtime~SendMessageOptions
  *
  * @property {Boolean} [includeTlsChannelId] - Whether the TLS channel ID should be passed to `onMessageExternal`.
@@ -152,6 +181,9 @@ export const RequestUpdateCheckStatus = {
 /**
  * Fired when the other end of the {@link Port} has called {@link Port#disconnect}.
  *
+ * @see {@link https://developer.chrome.com/extensions/runtime#type-Port}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/Port}
+ *
  * @name portDisconnectEvent
  * @function
  * @param {Port} port Port
@@ -159,6 +191,9 @@ export const RequestUpdateCheckStatus = {
 
 /**
  * Fired when the other end of the {@link Port} has sent this port a message.
+ *
+ * @see {@link https://developer.chrome.com/extensions/runtime#type-Port}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/Port}
  *
  * @name portMessageEvent
  * @function
@@ -169,12 +204,18 @@ export const RequestUpdateCheckStatus = {
  * Fired when an update for the browser is available, but it isn't installed immediately
  * because a browser restart is required.
  *
+ * @see {@link https://developer.chrome.com/extensions/runtime#event-onBrowserUpdateAvailable}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onBrowserUpdateAvailable}
+ *
  * @name browserUpdateAvailableEvent
  * @function
  */
 
 /**
  * Fired when a connection is made with either an extension process or a content script.
+ *
+ * @see {@link https://developer.chrome.com/extensions/runtime#event-onConnect}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onConnect}
  *
  * @name connectEvent
  * @function
@@ -183,6 +224,9 @@ export const RequestUpdateCheckStatus = {
 
 /**
  * Fired when an extension receives a connection request from a different extension.
+ *
+ * @see {@link https://developer.chrome.com/extensions/runtime#event-onConnectExternal}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onConnectExternal}
  *
  * @name connectExternalEvent
  * @function
@@ -193,6 +237,9 @@ export const RequestUpdateCheckStatus = {
  * Fired when the extension is first installed, when the extension is updated to a new version, and
  * when the browser is updated to a new version.
  *
+ * @see {@link https://developer.chrome.com/extensions/runtime#event-onInstalled}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onInstalled}
+ *
  * @name installedEvent
  * @function
  * @param {OnInstalledDetails} details Installation event details
@@ -200,6 +247,9 @@ export const RequestUpdateCheckStatus = {
 
 /**
  * {@link Runtime#onInstalled} Details.
+ *
+ * @see {@link https://developer.chrome.com/extensions/runtime#event-onInstalled}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onInstalled}
  *
  * @typedef {Object} OnInstalledDetails
  *
@@ -211,6 +261,9 @@ export const RequestUpdateCheckStatus = {
 
 /**
  * Reason that the {@link Runtime#onInstalled} event was dispatched.
+ *
+ * @see {@link https://developer.chrome.com/extensions/runtime#type-OnInstalledReason}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/OnInstalledReason}
  *
  * @enum {String}
  */
@@ -242,6 +295,9 @@ export const OnInstalledReason = {
  * &nbsp
  *  - or return a Promise from the listener function and resolve the promise when the response is ready.
  *
+ * @see {@link https://developer.chrome.com/extensions/runtime#event-onMessage}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onMessage}
+ *
  * @name messageEvent
  * @function
  *
@@ -270,6 +326,9 @@ export const OnInstalledReason = {
  * &nbsp
  *  - or return a Promise from the listener function and resolve the promise when the response is ready.
  *
+ * @see {@link https://developer.chrome.com/extensions/runtime#event-onMessageExternal}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onMessageExternal}
+ *
  * @name messageExternalEvent
  * @function
  *
@@ -287,6 +346,9 @@ export const OnInstalledReason = {
 /**
  * Fired when an app or the device that it runs on needs to be restarted.
  *
+ * @see {@link https://developer.chrome.com/extensions/runtime#event-onRestartRequired}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onRestartRequired}
+ *
  * @name restartRequiredEvent
  * @function
  *
@@ -295,6 +357,9 @@ export const OnInstalledReason = {
 
 /**
  * Reason that the {@link Runtime#onRestartRequired} event was dispatched.
+ *
+ * @see {@link https://developer.chrome.com/extensions/runtime#type-OnRestartRequiredReason}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/OnRestartRequiredReason}
  *
  * @enum {String}
  */
@@ -312,6 +377,9 @@ export const OnRestartRequiredReason = {
 /**
  * Fired when a profile that has this extension installed first starts up.
  *
+ * @see {@link https://developer.chrome.com/extensions/runtime#event-onStartup}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onStartup}
+ *
  * @name startupEvent
  * @function
  */
@@ -319,12 +387,18 @@ export const OnRestartRequiredReason = {
 /**
  * Fired on the event page just before it is unloaded.
  *
+ * @see {@link https://developer.chrome.com/extensions/runtime#event-onSuspend}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onSuspend}
+ *
  * @name suspendEvent
  * @function
  */
 
 /**
  * Fired after {@link Runtime#onSuspend} to indicate that the app won't be unloaded after all.
+ *
+ * @see {@link https://developer.chrome.com/extensions/runtime#event-onSuspendCanceled}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onSuspendCanceled}
  *
  * @name suspendCanceledEvent
  * @function
@@ -334,6 +408,9 @@ export const OnRestartRequiredReason = {
  * Fired when an update to the extension is available. This event enables an extension to delay an update:
  * for example, because it is in the middle of some operation which should not be interrupted.
  *
+ * @see {@link https://developer.chrome.com/extensions/runtime#event-onUpdateAvailable}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onUpdateAvailable}
+ *
  * @name updateAvailableEvent
  * @function
  * @param {OnUpdateAvailableDetails} details Update Details
@@ -341,6 +418,9 @@ export const OnRestartRequiredReason = {
 
 /**
  * {@link Runtime#onUpdateAvailable} Details.
+ *
+ * @see {@link https://developer.chrome.com/extensions/runtime#event-onUpdateAvailable}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onUpdateAvailable}
  *
  * @typedef {Object} OnUpdateAvailableDetails
  *
@@ -355,6 +435,9 @@ export const OnRestartRequiredReason = {
  * &nbsp
  * It is also a property of {@link Port}, but only in the {@link Port} instance passed into the
  * {@link Runtime#onConnect} or {@link Runtime#onConnectExternal} listeners.
+ *
+ * @see {@link https://developer.chrome.com/extensions/runtime#type-MessageSender}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/MessageSender}
  */
 export class MessageSender extends Base {
     static Title = 'MessageSender';
@@ -382,6 +465,9 @@ export class MessageSender extends Base {
      * The tab which opened the connection. This property will only be defined when the connection was opened
      * from a tab (including content scripts).
      *
+     * @see {@link https://developer.chrome.com/extensions/runtime#type-MessageSender}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/MessageSender}
+     *
      * @returns {Tab}
      */
     get tab() {
@@ -391,6 +477,9 @@ export class MessageSender extends Base {
     /**
      * The frame that opened the connection. Zero for top-level frames, positive for child frames. This will
      * only be set when tab is set.
+     *
+     * @see {@link https://developer.chrome.com/extensions/runtime#type-MessageSender}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/MessageSender}
      *
      * @returns {Number}
      */
@@ -405,6 +494,9 @@ export class MessageSender extends Base {
      * &nbsp
      * Note that in Firefox, before version 54, this value was the extension's internal ID (that is, the UUID
      * that appears in the extension's URL).
+     *
+     * @see {@link https://developer.chrome.com/extensions/runtime#type-MessageSender}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/MessageSender}
      *
      * @returns {String}
      */
@@ -423,6 +515,9 @@ export class MessageSender extends Base {
      * If the sender is a script running in a web page (including content scripts as well as normal page scripts),
      * then url will be the web page URL. If the script is running in an iframe, url will be the iframe's URL.
      *
+     * @see {@link https://developer.chrome.com/extensions/runtime#type-MessageSender}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/MessageSender}
+     *
      * @returns {String}
      */
     get url() {
@@ -432,6 +527,9 @@ export class MessageSender extends Base {
     /**
      * The TLS channel ID of the page or frame that opened the connection, if requested by the extension,
      * and if available.
+     *
+     * @see {@link https://developer.chrome.com/extensions/runtime#type-MessageSender}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/MessageSender}
      *
      * @returns {String}
      */
@@ -459,6 +557,9 @@ export class MessageSender extends Base {
  *  - between your extension and a native application running on the user's computer.
  * &nbsp
  *  - between your extension and a different extension
+ *
+ * @see {@link https://developer.chrome.com/extensions/runtime#type-Port}
+ * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/Port}
  */
 export class Port extends Base {
     static Title = 'Port';
@@ -494,6 +595,9 @@ export class Port extends Base {
      * If the port was disconnected due to an error, this will be set to an object with a string property message,
      * giving you more information about the error. See {@link onDisconnect}.
      *
+     * @see {@link https://developer.chrome.com/extensions/runtime#type-Port}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/Port}
+     *
      * @returns {Object}
      */
     get error() {
@@ -504,6 +608,9 @@ export class Port extends Base {
      * The port's name, defined in the {@link Runtime#connect} or {@link Tabs#connect} call that created it. If
      * this port is connected to a native application, its name is the name of the native application.
      *
+     * @see {@link https://developer.chrome.com/extensions/runtime#type-Port}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/Port}
+     *
      * @returns {String}
      */
     get name() {
@@ -513,6 +620,9 @@ export class Port extends Base {
     /**
      * Contains information about the sender of the message. This property will only be present on ports passed
      * to {@link Runtime#onConnect}/{@link Runtime#onConnectExternal} listeners.
+     *
+     * @see {@link https://developer.chrome.com/extensions/runtime#type-Port}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/Port}
      *
      * @returns {MessageSender}
      */
@@ -535,6 +645,9 @@ export class Port extends Base {
      * Note that on Chrome {@link Port#error} is not supported: instead, use {@link Runtime#lastError} to get
      * the error message.
      *
+     * @see {@link https://developer.chrome.com/extensions/runtime#type-Port}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/Port}
+     *
      * @returns {Listener} Listener that emits {@link portDisconnectEvent disconnect} events
      */
     get onDisconnect() {
@@ -544,6 +657,9 @@ export class Port extends Base {
     /**
      * Listener will be called when the other end has sent this port a message. The listener will be passed the
      * JSON object that the other end sent.
+     *
+     * @see {@link https://developer.chrome.com/extensions/runtime#type-Port}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/Port}
      *
      * @returns {Listener} Listener that emits {@link portMessageEvent message} events
      */
@@ -556,6 +672,9 @@ export class Port extends Base {
      * {@link onDisconnect} to be fired at the other end. This is useful if the other end is maintaining
      * some state relating to this port, which can be cleaned up on disconnect. If this port is connected
      * to a native application, this function will close the native application.
+     *
+     * @see {@link https://developer.chrome.com/extensions/runtime#type-Port}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/Port}
      */
     disconnect() {
         this.$call('disconnect');
@@ -565,6 +684,9 @@ export class Port extends Base {
      *  Send a message to the other end. This takes one argument, which is a JSON object representing the message
      *  to send. It will be delivered to any script listening to the port's {@link Port#onMessage} event, or to
      *  the native application if this port is connected to a native application.
+     *
+     * @see {@link https://developer.chrome.com/extensions/runtime#type-Port}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/Port}
      *
      *  @param {Object} message Message
      */
@@ -627,6 +749,9 @@ export class Runtime extends Base {
      * &nbsp
      * @deprecated Deprecated, use `runtime.onRestartRequired` instead.
      *
+     * @see {@link https://developer.chrome.com/extensions/runtime#event-onBrowserUpdateAvailable}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onBrowserUpdateAvailable}
+     *
      * @returns {Listener} Listener that emits {@link browserUpdateAvailableEvent browserUpdateAvailable} events
      */
     get onBrowserUpdateAvailable() {
@@ -635,6 +760,9 @@ export class Runtime extends Base {
 
     /**
      * Fired when a connection is made with either an extension process or a content script.
+     *
+     * @see {@link https://developer.chrome.com/extensions/runtime#event-onConnect}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onConnect}
      *
      * @returns {Listener} Listener that emits {@link connectEvent connect} events
      */
@@ -652,6 +780,9 @@ export class Runtime extends Base {
      * a `sender` property, which is a {@link MessageSender} object, and which the recipient can use to check the
      * sender's ID.
      *
+     * @see {@link https://developer.chrome.com/extensions/runtime#event-onConnectExternal}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onConnectExternal}
+     *
      * @returns {Listener} Listener that emits {@link connectExternalEvent connectExternal} events
      */
     get onConnectExternal() {
@@ -665,6 +796,9 @@ export class Runtime extends Base {
      * Note that {@link onInstalled} is not the same as {@link Management#onInstalled}. The {@link onInstalled}
      * event is fired only for your extension. The {@link Management#onInstalled} event is fired for any extensions.
      *
+     * @see {@link https://developer.chrome.com/extensions/runtime#event-onInstalled}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onInstalled}
+     *
      * @returns {Listener} Listener that emits {@link installedEvent installed} events.
      */
     get onInstalled() {
@@ -674,6 +808,9 @@ export class Runtime extends Base {
     /**
      * Fired when a message is sent from either an extension process or a content script.
      *
+     * @see {@link https://developer.chrome.com/extensions/runtime#event-onMessage}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onMessage}
+     *
      * @returns {Listener} Listener that emits {@link messageEvent message} events.
      */
     get onMessage() {
@@ -682,6 +819,9 @@ export class Runtime extends Base {
 
     /**
      * Fired when a message is sent from another extension. Cannot be used in a content script.
+     *
+     * @see {@link https://developer.chrome.com/extensions/runtime#event-onMessageExternal}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onMessageExternal}
      *
      * @returns {Listener} Listener that emits {@link messageExternalEvent messageExternal} events.
      */
@@ -695,6 +835,9 @@ export class Runtime extends Base {
      * restart will be enforced after a 24-hour grace period has passed. Currently, this event is only
      * fired for Chrome OS kiosk apps.
      *
+     * @see {@link https://developer.chrome.com/extensions/runtime#event-onRestartRequired}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onRestartRequired}
+     *
      * @returns {Listener} Listener that emits {@link restartRequiredEvent restartRequired} events.
      */
     get onRestartRequired() {
@@ -705,6 +848,9 @@ export class Runtime extends Base {
      * Fired when a profile that has this extension installed first starts up. This event is not fired
      * when a private browsing/incognito profile is started, even if this extension is operating in
      * 'split' incognito mode.
+     *
+     * @see {@link https://developer.chrome.com/extensions/runtime#event-onStartup}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onStartup}
      *
      * @returns {Listener} Listener that emits {@link startupEvent startup} events.
      */
@@ -717,6 +863,9 @@ export class Runtime extends Base {
      * do some cleanup. Note that since the page is unloading, any asynchronous operations started
      * while handling this event are not guaranteed to complete.
      *
+     * @see {@link https://developer.chrome.com/extensions/runtime#event-onSuspend}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onSuspend}
+     *
      * @returns {Listener} Listener that emits {@link suspendEvent suspend} events.
      */
     get onSuspend() {
@@ -725,6 +874,9 @@ export class Runtime extends Base {
 
     /**
      * Sent after {@link onSuspend} to indicate that the extension won't be unloaded after all.
+     *
+     * @see {@link https://developer.chrome.com/extensions/runtime#event-onSuspendCanceled}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onSuspendCanceled}
      *
      * @returns {Listener} Listener that emits {@link suspendCanceledEvent suspendCanceled} events.
      */
@@ -745,6 +897,9 @@ export class Runtime extends Base {
      *  - the extension is disabled and re-enabled
      * &nbsp
      *  - the extension explicitly reloads itself by calling {@link reload}.
+     *
+     * @see {@link https://developer.chrome.com/extensions/runtime#event-onUpdateAvailable}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onUpdateAvailable}
      *
      * @returns {Listener} Listener that emits {@link updateAvailableEvent updateAvailable} events.
      */
@@ -769,6 +924,9 @@ export class Runtime extends Base {
      * &nbsp
      * Note that you can't use this function to connect an extension to its content scripts. To do this, use
      * {@link Tabs#connect}.
+     *
+     * @see {@link https://developer.chrome.com/extensions/runtime#method-connect}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/connect}
      *
      * @param {String} [extensionId] The ID of the extension to connect to. If the target has set an ID explicitly
      * using the "applications" key in manifest.json, then `extensionId` should have that value. Otherwise it
@@ -802,6 +960,7 @@ export class Runtime extends Base {
      * that created the Port is destroyed. Once the Port is disconnected the browser will give the process
      * a few seconds to exit gracefully, and then kill it if it has not exited.
      *
+     * @see {@link https://developer.chrome.com/extensions/runtime#method-connectNative}
      * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/connectNative}
      *
      * @param {String} application The name of the native application to connect to. This must match the "name"
@@ -834,6 +993,7 @@ export class Runtime extends Base {
      *&nbsp
      * If the background page is an event page, the system will ensure it is loaded before resolving the promise.
      *
+     * @see {@link https://developer.chrome.com/extensions/runtime#method-getBackgroundPage}
      * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/getBackgroundPage}
      *
      * @returns {Promise} A `Promise` that will be fulfilled with the `Window` object for the background page, if there
@@ -847,6 +1007,9 @@ export class Runtime extends Base {
     /**
      * Returns information about the browser in which the extension is installed.
      *
+     * @see {@link https://developer.chrome.com/extensions/runtime#method-getBrowserInfo}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/getBrowserInfo}
+     *
      * @returns {Promise} A Promise that will be fulfilled with {@link Runtime~BrowserInfo}
      */
     getBrowserInfo() {
@@ -855,6 +1018,9 @@ export class Runtime extends Base {
 
     /**
      * Get the complete manifest.json file, serialized to a JSON object.
+     *
+     * @see {@link https://developer.chrome.com/extensions/runtime#method-getManifest}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/getManifest}
      *
      * @returns {Object} A JSON object representing the manifest.
      */
@@ -865,6 +1031,9 @@ export class Runtime extends Base {
     /**
      * Returns a DirectoryEntry object representing the package directory.
      *
+     * @see {@link https://developer.chrome.com/extensions/runtime#method-getPackageDirectoryEntry}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/getPackageDirectoryEntry}
+     *
      * @returns {Promise} A Promise that will be fulfilled with a DirectoryEntry object representing the
      *                    package directory.
      */
@@ -874,6 +1043,9 @@ export class Runtime extends Base {
 
     /**
      * Returns information about the current platform.
+     *
+     * @see {@link https://developer.chrome.com/extensions/runtime#method-getPlatformInfo}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/getPlatformInfo}
      *
      * @returns {Promise} A Promise that will be fulfilled with {@link Runtime~PlatformInfo}
      */
@@ -887,6 +1059,9 @@ export class Runtime extends Base {
      * &nbsp
      * This function does not check that the resource actually exists at that URL.
      *
+     * @see {@link https://developer.chrome.com/extensions/runtime#method-getURL}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/getURL}
+     *
      * @param {String} path A relative path from the manifest.json to a resource packaged with the extension.
      *
      * @returns {String} The fully-qualified URL to the resource.
@@ -897,6 +1072,9 @@ export class Runtime extends Base {
 
     /**
      * If your extension has an options page defined, this method opens it.
+     *
+     * @see {@link https://developer.chrome.com/extensions/runtime#method-openOptionsPage}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/openOptionsPage}
      *
      * @returns {Promise} A Promise that will be fulfilled with no arguments when the options page has been
      *                    created successfully, or rejected with an error message if the operation failed.
@@ -910,6 +1088,9 @@ export class Runtime extends Base {
      * &nbsp
      * If there are any pending updates for the extension, that have been deferred by listening to
      * {@link onUpdateAvailable}, then they will be applied on reload.
+     *
+     * @see {@link https://developer.chrome.com/extensions/runtime#method-reload}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/reload}
      */
     reload() {
         this.$call('reload');
@@ -917,6 +1098,9 @@ export class Runtime extends Base {
 
     /**
      * Check to see if an update for the extension is available.
+     *
+     * @see {@link https://developer.chrome.com/extensions/runtime#method-requestUpdateCheck}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/requestUpdateCheck}
      *
      * @returns {Promise} A Promise that will be fulfilled with {@link Runtime~RequestUpdateCheck}.
      */
@@ -935,6 +1119,9 @@ export class Runtime extends Base {
      * &nbsp
      * Extensions cannot send messages to content scripts using this method. To send messages to
      * content scripts, use {@link Tabs#sendMessage}.
+     *
+     * @see {@link https://developer.chrome.com/extensions/runtime#method-sendMessage}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/sendMessage}
      *
      * @param {String} [extensionId] The ID of the extension to send the message to. Include this to send the
      *                               message to a different extension. If the intended recipient has set an ID
@@ -970,6 +1157,9 @@ export class Runtime extends Base {
      * terminate the native application after getting a reply. To terminate a native application, the browser
      * will close the pipe, give the process a few seconds to exit gracefully, and then kill it if it has not exited.
      *
+     * @see {@link https://developer.chrome.com/extensions/runtime#method-sendNativeMessage}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/sendNativeMessage}
+     *
      * @param {String} application The name of the native application. This must match the "name" property in the
      *                             native application's manifest file.
      *
@@ -986,6 +1176,9 @@ export class Runtime extends Base {
     /**
      * Sets the URL to be visited when the extension is uninstalled. This may be used to clean up server-side
      * data, do analytics, or implement surveys. The URL can be a maximum 255 characters.
+     *
+     * @see {@link https://developer.chrome.com/extensions/runtime#method-setUninstallURL}
+     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/setUninstallURL}
      *
      * @param {String} url URL to be opened after the extension is uninstalled. This URL must have an http or
      *                     https scheme. Set it to an empty string to not open a new tab upon uninstallation.
