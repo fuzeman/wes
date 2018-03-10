@@ -113,12 +113,14 @@ export default class Base {
 
     $check(name) {
         let compat = Get(this.constructor.Compatibility, [
-            'webextensions', 'api', this.constructor.Name,
-            name, '__compat'
+            'webextensions', 'api',
+            ...this.constructor.Name.split('.'),
+            ...name.split('.'),
+            '__compat'
         ]);
 
         if(IsNil(compat)) {
-            return `Unknown method: ${this.constructor.Name}.${name}`;
+            return 'Unknown method';
         }
 
         // Retrieve status
