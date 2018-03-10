@@ -6,6 +6,18 @@ const TestCompatibility = {
     webextensions: {
         api: {
             test: {
+                missing: {
+                    __compat: {
+                        support: {
+                            chrome: {
+                                version_added: true
+                            },
+                            firefox: {
+                                version_added: '55'
+                            }
+                        }
+                    }
+                },
                 value: {
                     __compat: {
                         support: {
@@ -19,6 +31,18 @@ const TestCompatibility = {
                     }
                 },
                 onEvent: {
+                    __compat: {
+                        support: {
+                            chrome: {
+                                version_added: true
+                            },
+                            firefox: {
+                                version_added: '55'
+                            }
+                        }
+                    }
+                },
+                onMissing: {
                     __compat: {
                         support: {
                             chrome: {
@@ -89,6 +113,18 @@ const TestCompatibility = {
                             }
                         }
                     }
+                },
+                errorUnknownAsync: {
+                    __compat: {
+                        support: {
+                            chrome: {
+                                version_added: true
+                            },
+                            firefox: {
+                                version_added: '55'
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -101,16 +137,20 @@ class Test extends Base {
     static Name = 'test';
     static Compatibility = TestCompatibility;
 
-    get value() {
-        return this.$property('value');
-    }
-
     get unsupported() {
         return this.$property('unsupported');
     }
 
+    get value() {
+        return this.$property('value');
+    }
+
     get onEvent() {
         return this.$listener('onEvent');
+    }
+
+    get onMissing() {
+        return this.$listener('onMissing');
     }
 
     get onUnsupported() {
@@ -125,6 +165,10 @@ class Test extends Base {
         return this.$call('error');
     }
 
+    missing() {
+        return this.$call('missing');
+    }
+
     successAsync() {
         return this.$promise('successAsync');
     }
@@ -132,9 +176,89 @@ class Test extends Base {
     errorAsync() {
         return this.$promise('errorAsync');
     }
+
+    errorUnknownAsync() {
+        return this.$promise('errorUnknownAsync');
+    }
 }
 
 describe('Base', () => {
+    describe('Undefined API', () => {
+        let test = new Test({
+            title: 'Firefox',
+            name: 'firefox',
+            version: '55.0',
+
+            promises: true,
+            namespace: {}
+        });
+
+        describe('$listener', () => {
+            it('should throw an exception on undefined api', () => {
+                expect(() => test.onEvent.addListener(() => false)).toThrowError(
+                    Error, 'Test API is not available'
+                );
+            });
+        });
+
+        describe('$promise', () => {
+            it('should reject with an error on undefined api', (done) => {
+                test.errorAsync().then(() => {
+                    done.fail('Promise wasn\'t rejected');
+                }, (err) => {
+                    expect(err.message).toBe('Test API is not available');
+                    done();
+                });
+            });
+        });
+
+        describe('$property', () => {
+            it('should throw an exception on undefined api', () => {
+                expect(() => test.value).toThrowError(
+                    Error, 'Test API is not available'
+                );
+            });
+        });
+    });
+
+    describe('Unknown Browser', () => {
+        let test = new Test({
+            title: 'Test',
+            name: 'test',
+            version: '55.0',
+
+            promises: true,
+            namespace: {}
+        });
+
+        describe('$listener', () => {
+            it('should throw an exception on unknown browser', () => {
+                expect(() => test.onEvent.addListener(() => false)).toThrowError(
+                    Error, 'Test API is not available (Unknown browser: test)'
+                );
+            });
+        });
+
+        describe('$promise', () => {
+            it('should reject with an error on unknown browser', (done) => {
+                test.errorAsync().then(() => {
+                    done.fail('Promise wasn\'t rejected');
+                }, (err) => {
+                    expect(err.message).toBe('Test API is not available (Unknown browser: test)');
+                    done();
+                });
+            });
+        });
+
+        describe('$property', () => {
+            it('should raise an exception on unknown browser', () => {
+                expect(() => test.value).toThrowError(
+                    Error, 'Test API is not available (Unknown browser: test)'
+                );
+            });
+        });
+    });
+
     describe('Chrome', () => {
         let onEvent = new MockListener();
 
@@ -142,14 +266,14 @@ describe('Base', () => {
             lastError: null
         };
 
-        let chrome = new Test({
+        let test = new Test({
             title: 'Chrome',
             name: 'chrome',
             version: '54.0',
 
             promises: false,
 
-            namespace: {
+            namespace: () => ({
                 runtime,
 
                 test: {
@@ -169,33 +293,52 @@ describe('Base', () => {
                     errorAsync: (callback) => {
                         runtime.lastError = { message: 'Error' };
                         callback();
+                    },
+                    errorUnknownAsync: (callback) => {
+                        runtime.lastError = { };
+                        callback();
                     }
                 }
-            }
+            })
         });
 
         describe('$call', () => {
             it('should return value', () => {
-                expect(chrome.success()).toBe('Success');
+                expect(test.success()).toBe('Success');
             });
 
-            it('should raise an exception', () => {
-                expect(() => chrome.error()).toThrowError(Error, 'Exception');
+            it('should throw an exception', () => {
+                expect(() => test.error()).toThrowError(Error, 'Exception');
+            });
+
+            it('should throw an exception on missing function', () => {
+                expect(() => test.missing()).toThrowError(
+                    Error, 'Test API doesn\'t support "missing"'
+                );
             });
         });
 
         describe('$promise', () => {
             it('should return value', () => {
-                return chrome.successAsync().then((result) => {
+                return test.successAsync().then((result) => {
                     expect(result).toBe('Success');
                 });
             });
 
             it('should reject with error', (done) => {
-                chrome.errorAsync().then(() => {
+                test.errorAsync().then(() => {
                     done.fail('Promise wasn\'t rejected');
                 }, (err) => {
                     expect(err.message).toBe('Error');
+                    done();
+                });
+            });
+
+            it('should reject with unknown error', (done) => {
+                test.errorUnknownAsync().then(() => {
+                    done.fail('Promise wasn\'t rejected');
+                }, (err) => {
+                    expect(err.message).toBe('Unknown Error');
                     done();
                 });
             });
@@ -203,19 +346,19 @@ describe('Base', () => {
 
         describe('$property', () => {
             it('should return value', () => {
-                expect(chrome.value).toBe('value');
+                expect(test.value).toBe('value');
             });
 
-            it('should raise an exception on unsupported browsers', () => {
-                expect(() => chrome.unsupported).toThrowError(
-                    Error, 'Test API doesn\'t support "unsupported" (Unknown method: test.unsupported)'
+            it('should throw an exception on unsupported browsers', () => {
+                expect(() => test.unsupported).toThrowError(
+                    Error, 'Test API doesn\'t support "unsupported" (Unknown method)'
                 );
             });
         });
 
         describe('$listener', () => {
             it('should support addListener(listener)', (done) => {
-                chrome.onEvent.addListener((result) => {
+                test.onEvent.addListener((result) => {
                     expect(result).toBe('event');
                     done();
                 });
@@ -228,30 +371,36 @@ describe('Base', () => {
                 function listener() { }
 
                 // Add listener
-                chrome.onEvent.addListener(listener);
+                test.onEvent.addListener(listener);
 
                 // Ensure listener has been added
-                expect(chrome.onEvent.hasListener(listener)).toBeTruthy();
+                expect(test.onEvent.hasListener(listener)).toBeTruthy();
             });
 
             it('should support removeListener(listener)', () => {
                 function listener() { }
 
                 // Add listener
-                chrome.onEvent.addListener(listener);
+                test.onEvent.addListener(listener);
 
                 // Ensure listener has been added
-                expect(chrome.onEvent.hasListener(listener)).toBeTruthy();
+                expect(test.onEvent.hasListener(listener)).toBeTruthy();
 
                 // Remove listener
-                chrome.onEvent.removeListener(listener);
+                test.onEvent.removeListener(listener);
 
                 // Ensure listener has been removed
-                expect(chrome.onEvent.hasListener(listener)).toBeFalsy();
+                expect(test.onEvent.hasListener(listener)).toBeFalsy();
             });
 
-            it('should raise an exception on unsupported browsers', () => {
-                expect(() => chrome.onUnsupported.addListener(() => false)).toThrowError(
+            it('should throw an exception on missing event', () => {
+                expect(() => test.onMissing.addListener(() => false)).toThrowError(
+                    Error, 'Test API doesn\'t support "onMissing"'
+                );
+            });
+
+            it('should throw an exception on unsupported browsers', () => {
+                expect(() => test.onUnsupported.addListener(() => false)).toThrowError(
                     Error, 'Test API doesn\'t support "onUnsupported" (Not Implemented)'
                 );
             });
@@ -265,7 +414,7 @@ describe('Base', () => {
             lastError: null
         };
 
-        let firefox = new Test({
+        let test = new Test({
             title: 'Firefox',
             name: 'firefox',
             version: '55.0',
@@ -298,23 +447,29 @@ describe('Base', () => {
 
         describe('$call', () => {
             it('should return value', () => {
-                expect(firefox.success()).toBe('Success');
+                expect(test.success()).toBe('Success');
             });
 
-            it('should raise exception', () => {
-                expect(() => firefox.error()).toThrowError(Error, 'Exception');
+            it('should throw an exception', () => {
+                expect(() => test.error()).toThrowError(Error, 'Exception');
+            });
+
+            it('should throw an exception on missing function', () => {
+                expect(() => test.missing()).toThrowError(
+                    Error, 'Test API doesn\'t support "missing"'
+                );
             });
         });
 
         describe('$promise', () => {
             it('should return value', () => {
-                return firefox.successAsync().then((result) => {
+                return test.successAsync().then((result) => {
                     expect(result).toBe('Success');
                 });
             });
 
             it('should reject with error', (done) => {
-                firefox.errorAsync().then(() => {
+                test.errorAsync().then(() => {
                     done.fail('Promise wasn\'t rejected');
                 }, (err) => {
                     expect(err.message).toBe('Error');
@@ -325,19 +480,19 @@ describe('Base', () => {
 
         describe('$property', () => {
             it('should return value', () => {
-                expect(firefox.value).toBe('value');
+                expect(test.value).toBe('value');
             });
 
             it('should raise an exception on unsupported browsers', () => {
-                expect(() => firefox.unsupported).toThrowError(
-                    Error, 'Test API doesn\'t support "unsupported" (Unknown method: test.unsupported)'
+                expect(() => test.unsupported).toThrowError(
+                    Error, 'Test API doesn\'t support "unsupported" (Unknown method)'
                 );
             });
         });
 
         describe('$listener', () => {
             it('should support addListener(listener)', (done) => {
-                firefox.onEvent.addListener((result) => {
+                test.onEvent.addListener((result) => {
                     expect(result).toBe('event');
                     done();
                 });
@@ -350,30 +505,36 @@ describe('Base', () => {
                 function listener() { }
 
                 // Add listener
-                firefox.onEvent.addListener(listener);
+                test.onEvent.addListener(listener);
 
                 // Ensure listener has been added
-                expect(firefox.onEvent.hasListener(listener)).toBeTruthy();
+                expect(test.onEvent.hasListener(listener)).toBeTruthy();
             });
 
             it('should support removeListener(listener)', () => {
                 function listener() { }
 
                 // Add listener
-                firefox.onEvent.addListener(listener);
+                test.onEvent.addListener(listener);
 
                 // Ensure listener has been added
-                expect(firefox.onEvent.hasListener(listener)).toBeTruthy();
+                expect(test.onEvent.hasListener(listener)).toBeTruthy();
 
                 // Remove listener
-                firefox.onEvent.removeListener(listener);
+                test.onEvent.removeListener(listener);
 
                 // Ensure listener has been removed
-                expect(firefox.onEvent.hasListener(listener)).toBeFalsy();
+                expect(test.onEvent.hasListener(listener)).toBeFalsy();
+            });
+
+            it('should throw an exception on missing event', () => {
+                expect(() => test.onMissing.addListener(() => false)).toThrowError(
+                    Error, 'Test API doesn\'t support "onMissing"'
+                );
             });
 
             it('should raise an exception on unsupported browsers', () => {
-                expect(() => firefox.onUnsupported.addListener(() => false)).toThrowError(
+                expect(() => test.onUnsupported.addListener(() => false)).toThrowError(
                     Error, 'Test API doesn\'t support "onUnsupported" (Not Implemented)'
                 );
             });
