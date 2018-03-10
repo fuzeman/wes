@@ -50,18 +50,23 @@ import Base from './core/base';
 /**
  * The machine's processor architecture.
  *
- * @type {{arm: string, "x86-32": string, "x86-64": string}}
+ * @enum {String}
  */
 export const PlatformArch = {
+    /** The platform is based on arm architecture. */
     'arm': 'arm',
+
+    /** The platform is based on x86 32-bit architecture. */
     'x86-32': 'x86-32',
+
+    /** The platform is based on x86 64-bit architecture. */
     'x86-64': 'x86-64'
 };
 
 /**
  * The native client architecture. This may be different from arch on some platforms.
  *
- * @type {{arm: string, "x86-32": string, "x86-64": string}}
+ * @enum {String}
  */
 export const PlatformNaclArch = {
     'arm': 'arm',
@@ -72,14 +77,25 @@ export const PlatformNaclArch = {
 /**
  * The operating system the browser is running on.
  *
- * @type {{android: string, cros: string, linux: string, mac: string, openbsd: string, win: string}}
+ * @enum {String}
  */
 export const PlatformOs = {
+    /** The underlying operating system is Android. */
     android: 'android',
+
+    /** The underlying operating system is Chrome OS. */
     cros: 'cros',
+
+    /** The underlying operating system is Linux. */
     linux: 'linux',
+
+    /** The underlying operating system is Mac OS X. */
     mac: 'mac',
+
+    /** The underlying operating system is Open/FreeBSD. */
     openbsd: 'openbsd',
+
+    /** The underlying operating system is Windows. */
     win: 'win'
 };
 

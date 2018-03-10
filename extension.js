@@ -32,7 +32,7 @@ import Base from './core/base';
  * @see {@link https://developer.chrome.com/extensions/extension#type-ViewType}
  * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/extension/ViewType}
  *
- * @type {{Notification: string, Popup: string, Tab: string}}
+ * @enum {String}
  */
 export const ViewType = {
     Notification: 'notification',
