@@ -38,7 +38,7 @@ class Listener {
         }
 
         // Log warnings
-        if(!IsNil(message)) {
+        if(this.$api.$standard.indexOf(this.$name) < 0 && !IsNil(message)) {
             console.warn(`[${this.$api.constructor.Name}.${this.$name}] ${message}`);
         }
 
@@ -192,7 +192,7 @@ export default class Base {
         }
 
         // Log warnings
-        if(!IsNil(message)) {
+        if(this.$standard.indexOf(name) < 0 && !IsNil(message)) {
             console.warn(`[${this.constructor.Name}.${name}] ${message}`);
         }
 
