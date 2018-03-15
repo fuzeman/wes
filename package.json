@@ -46,7 +46,7 @@
   "scripts": {
     "build": "babel . --out-dir lib --ignore lib,node_modules",
     "es6:coveralls": "nyc report --reporter=text-lcov | coveralls",
-    "es6:jasmine": "cross-env NODE_ENV=test nyc --all jasmine JASMINE_CONFIG_PATH=jasmine.es6.json",
+    "es6:jasmine": "cross-env NODE_ENV=test nyc --reporter html --reporter text --all jasmine JASMINE_CONFIG_PATH=jasmine.es6.json",
     "es6:lint": "eslint ./",
     "es6:test": "npm run es6:jasmine && npm run es6:lint",
     "jasmine": "jasmine JASMINE_CONFIG_PATH=jasmine.json",
@@ -65,6 +65,7 @@
     "exclude": [
       "{**/,}*.spec.js",
 
+      "coverage",
       "lib",
       "node_modules",
       "test"
