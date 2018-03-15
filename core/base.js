@@ -3,91 +3,87 @@ import Bowser from 'bowser';
 import Get from 'lodash/get';
 import IsFunction from 'lodash/isFunction';
 import IsNil from 'lodash/isNil';
+import IsString from 'lodash/isString';
+import IsUndefined from 'lodash/isUndefined';
 
 import {Browser} from './environment';
 
 
-class Listener {
-    constructor(api, name) {
-        this.$api = api;
-        this.$name = name;
-    }
-
-    get $listener() {
-        let message = this.$api.$check(this.$name);
-
-        // Ensure API exists
-        if(IsNil(this.$api.$target)) {
-            if(IsNil(message)) {
-                throw new Error(`${this.$api.constructor.Title} API is not available`);
-            }
-
-            throw new Error(`${this.$api.constructor.Title} API is not available (${message})`);
-        }
-
-        // Retrieve target listener
-        let target = this.$api.$target[this.$name];
-
-        // Ensure target listener exists
-        if(IsNil(target)) {
-            if(IsNil(message)) {
-                throw new Error(`${this.$api.constructor.Title} API doesn\'t support "${this.$name}"`);
-            }
-
-            throw new Error(`${this.$api.constructor.Title} API doesn\'t support "${this.$name}" (${message})`);
-        }
-
-        // Log warnings
-        if(this.$api.$standard.indexOf(this.$name) < 0 && !IsNil(message)) {
-            console.warn(`[${this.$api.constructor.Name}.${this.$name}] ${message}`);
-        }
-
-        // Return listener
-        return target;
-    }
-
-    /**
-     * Add a listener to this event.
-     *
-     * @param {Function} listener Listener to add
-     */
-    addListener(listener) {
-        return this.$listener.addListener(listener);
-    }
-
-    /**
-     * Check whether `listener` is registered for this event.
-     *
-     * @param {Function} listener Listener
-     * @return {Boolean} true if it is listening, false otherwise.
-     */
-    hasListener(listener) {
-        return this.$listener.hasListener(listener);
-    }
-
-    /**
-     * Stop listening to this event.
-     *
-     * @param {Function} listener Listener to remove
-     */
-    removeListener(listener) {
-        return this.$listener.removeListener(listener);
-    }
-}
-
 export default class Base {
     static Title = null;
 
+    static Prefix = true;
     static Name = null;
-    static Compatibility = null;
 
+    static Compatibility = null;
     static Standard = [];
 
-    constructor(browser = null) {
-        this.$browser = browser || Browser;
+    constructor(options = null) {
+        this.$options = {
+            browser: Browser,
+            compatibility: null,
+            name: null,
+            target: null,
+            title: null,
+
+            ...(options || {})
+        };
+
+        // Retrieve options
+        this._browser = this.$options.browser;
+        this._compatibility = this.$options.compatibility;
+        this._name = this.$options.name;
+        this._target = this.$options.target;
+        this._title = this.$options.title;
     }
 
+    // region Browser
+
+    get $browser() {
+        return this._browser;
+    }
+
+    set $browser(browser) {
+        this._browser = browser;
+    }
+
+    // endregion
+
+    // region Compatibility
+
+    get $compatibility() {
+        return this._compatibility || this.constructor.Compatibility;
+    }
+
+    set $compatibility(compatibility) {
+        this._compatibility = compatibility;
+    }
+
+    get $support() {
+        return Get(this.$compatibility, [
+            'webextensions', 'api'
+        ]);
+    }
+
+    // endregion
+
+    // region Name
+
+    get $name() {
+        return this._name || this.constructor.Name;
+    }
+
+    set $name(name) {
+        this._name = name;
+    }
+
+    // endregion
+
     get $namespace() {
+        if(IsNil(this.$browser)) {
+            return {};
+        }
+
         if(IsFunction(this.$browser.namespace)) {
             return this.$browser.namespace();
         }
@@ -107,97 +103,216 @@ export default class Base {
         return this.constructor.Standard;
     }
 
+    // region Target
+
     get $target() {
-        return this.$namespace[this.constructor.Name];
+        if(!IsNil(this._target)) {
+            return this._target;
+        }
+
+        let namespace = this.$namespace;
+
+        if(IsNil(namespace)) {
+            return {};
+        }
+
+        return namespace[this.$name] || {};
+    }
+
+    set $target(target) {
+        this._target = target;
+    }
+
+    // endregion
+
+    // region Title
+
+    get $title() {
+        return this._title || this.constructor.Title;
+    }
+
+    set $title(title) {
+        this._title = title;
+    }
+
+    // endregion
+
+    $assertFunction(name) {
+        let { path, message } = this.$check(name);
+
+        // Throw an error if the member doesn't exist
+        if(!this.$has(name)) {
+            if(!IsNil(path) && !IsNil(message)) {
+                throw new Error(`${path} is not available (${message})`);
+            } else if(!IsNil(path)) {
+                throw new Error(`${path} is not available`);
+            }
+
+            throw new Error(`${name} is not available`);
+        }
+
+        // Log warning
+        if(!IsNil(message)) {
+            console.warn(`[${path}] ${message}`);
+        }
+
+        // Ensure function exists
+        if(!IsFunction(this.$target[name])) {
+            throw new Error(`${name} is not a function`);
+        }
+    }
+
+    $assertProperty(name) {
+        let { path, message } = this.$check(name);
+
+        // Throw an error if the member doesn't exist
+        if(!IsNil(path) && !IsNil(message)) {
+            throw new Error(`${path} is not available (${message})`);
+        } else if(!IsNil(path)) {
+            throw new Error(`${path} is not available`);
+        }
     }
 
     $check(name) {
-        let compat = Get(this.constructor.Compatibility, [
-            'webextensions', 'api',
-            ...this.constructor.Name.split('.'),
-            ...name.split('.'),
-            '__compat'
-        ]);
+        let supportPrefix = '';
 
-        if(IsNil(compat)) {
-            return 'Unknown method';
+        if(this.constructor.Prefix) {
+            name = `${this.$name}.${name}`;
+        } else {
+            supportPrefix = `${this.$name}.`;
         }
 
-        // Retrieve status
-        let status = {
-            deprecated: false,
-            experimental: false,
-            standard_track: false
-        };
+        // Build list of paths
+        let paths = [];
+        let pos = -1;
 
-        if(!IsNil(compat.status)) {
-            status = {
-                ...status,
-                ...compat.status
+        while((pos = name.indexOf('.', pos + 1)) >= 0) {
+            paths.push(name.substring(0, pos));
+        }
+
+        paths.push(name);
+
+        // Validate parents
+        for(let i = 0; i < paths.length; i++) {
+            let path = paths[i];
+
+            let value = Get(this.$namespace, path);
+
+            // Undefined API
+            if(IsNil(value) && i < 1 && this.constructor.Prefix) {
+                return {
+                    path,
+                    message: null
+                };
+            }
+
+            // Ignore Root API
+            if(i < 1 && this.constructor.Prefix) {
+                continue;
+            }
+
+            // Ignore standard members
+            let current = path.substring(path.lastIndexOf('.') + 1);
+
+            if(this.$standard.indexOf(current) >= 0) {
+                continue;
+            }
+
+            // Retrieve support information
+            let { status, support } = {
+                status: {},
+                support: null,
+
+                ...Get(this.$support, `${supportPrefix + path}.__compat`, {})
+            };
+
+            // Ensure support information exists
+            if(IsNil(support)) {
+                if(!IsNil(value)) {
+                    console.warn(`[${path}] Unknown member`);
+                    continue;
+                }
+
+                return {
+                    path,
+                    message: 'unknown member'
+                };
+            }
+
+            // Ensure browser support information exists
+            if(IsNil(support[this.$browser.name])) {
+                if(!IsNil(value)) {
+                    console.warn(`[${path}] Unknown browser: ${this.$browser.name}`);
+                    continue;
+                }
+
+                return {
+                    path,
+                    message: `unknown browser: ${this.$browser.name}`
+                };
+            }
+
+            // Deprecated
+            if(status.deprecated) {
+                console.warn(`[${path}] Deprecated`);
+            }
+
+            if(status.experimental) {
+                console.warn(`[${path}] Experimental`);
+            }
+
+            // Defined
+            if(!IsUndefined(value)) {
+                continue;
+            }
+
+            // Check version in support information
+            let version_added = support[this.$browser.name].version_added;
+
+            if(version_added === false) {
+                return {
+                    path,
+                    message: 'not implemented'
+                };
+            }
+
+            if(IsString(version_added) && Bowser.compareVersions([this.$browser.version, version_added]) < 0) {
+                return {
+                    path,
+                    message: `requires: ${this.$browser.name} >= ${version_added}`
+                };
+            }
+
+            // Not Defined
+            return {
+                path,
+                message: null
             };
         }
 
-        // Retrieve browser support information
-        let support = compat.support[this.$browser.name];
+        return {
+            path: null,
+            message: null
+        };
+    }
 
-        if(IsNil(support)) {
-            return `Unknown browser: ${this.$browser.name}`;
-        }
+    $exists() {
+        return !IsNil(this.$target);
+    }
 
-        // Not Implemented
-        if(support.version_added === false) {
-            return 'Not Implemented';
-        }
+    $has(name) {
+        return this.$exists() && !IsNil(Get(this.$target, name));
+    }
 
-        // Deprecated
-        if(status.deprecated) {
-            return 'Deprecated';
-        }
-
-        // Available at unknown version
-        if(support.version_added === true) {
-            return null;
-        }
-
-        // Implemented in future version
-        if(Bowser.compareVersions([this.$browser.version, support.version_added]) >= 0) {
-            return null;
-        }
-
-        return `Requires: ${this.$browser.title} >= ${support.version_added}`;
+    $hasFunction(name) {
+        return this.$has(name) && IsFunction(Get(this.$target, name));
     }
 
     $call(name, ...args) {
-        let message = this.$check(name);
-
-        // Ensure API exists
-        if(IsNil(this.$target)) {
-            if(IsNil(message)) {
-                throw new Error(`${this.constructor.Title} API is not available`);
-            }
-
-            throw new Error(`${this.constructor.Title} API is not available (${message})`);
-        }
-
-        // Retrieve target function
-        let target = this.$target[name];
-
-        // Ensure target function exists
-        if(IsNil(target) || !IsFunction(target)) {
-            if(IsNil(message)) {
-                throw new Error(`${this.constructor.Title} API doesn\'t support "${name}"`);
-            }
-
-            throw new Error(`${this.constructor.Title} API doesn\'t support "${name}" (${message})`);
-        }
-
-        // Log warnings
-        if(this.$standard.indexOf(name) < 0 && !IsNil(message)) {
-            console.warn(`[${this.constructor.Name}.${name}] ${message}`);
-        }
+        this.$assertFunction(name);
 
         // Call target function
-        return target(...args);
+        return this.$target[name].apply(this.$target, args);
     }
 
     $promise(name, ...args) {
@@ -223,27 +338,9 @@ export default class Base {
     }
 
     $property(name) {
-        let message = this.$check(name);
-
-        // Ensure API exists
-        if(IsNil(this.$target)) {
-            if(IsNil(message)) {
-                throw new Error(`${this.constructor.Title} API is not available`);
-            }
-
-            throw new Error(`${this.constructor.Title} API is not available (${message})`);
-        }
-
-        // Ensure target property exists
-        if(this.$standard.indexOf(name) < 0 && !IsNil(message)) {
-            throw new Error(`${this.constructor.Title} API doesn\'t support "${name}" (${message})`);
-        }
+        this.$assertProperty(name);
 
         // Return property value
         return this.$target[name];
-    }
-
-    $listener(name) {
-        return new Listener(this, name);
     }
 }
