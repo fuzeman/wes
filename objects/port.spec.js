@@ -1,4 +1,4 @@
-import {MockListener} from './test/mock';
+import {MockListener} from '../test/mock';
 import {MessageSender, Port} from './port';
 
 
