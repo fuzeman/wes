@@ -1,6 +1,7 @@
 import ExtensionCompatibility from 'mdn-browser-compat-data/webextensions/api/extension.json';
 
 import Base from './core/base';
+import Event from './core/event';
 
 
 /**
@@ -55,6 +56,38 @@ export class Extension extends Base {
     static Name = 'extension';
     static Compatibility = ExtensionCompatibility;
 
+    constructor(options = null) {
+        super(options);
+
+        // region Events
+
+        /**
+         * Fired when a request is sent from either an extension process or a content script.
+         *
+         * @deprecated Deprecated, use `runtime.onMessage` instead.
+         *
+         * @see {@link https://developer.chrome.com/extensions/extension#event-onRequest}
+         * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/extension/onRequest}
+         *
+         * @returns {Event}
+         */
+        this.onRequest = new Event(this, 'onRequest');
+
+        /**
+         * Fired when a request is sent from another extension.
+         *
+         * @deprecated Deprecated, use `runtime.onMessageExternal` instead.
+         *
+         * @see {@link https://developer.chrome.com/extensions/extension#event-onRequestExternal}
+         * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/extension/onRequestExternal}
+         *
+         * @returns {Event}
+         */
+        this.onRequestExternal = new Event(this, 'onRequestExternal');
+
+        // endregion
+    }
+
     /**
      * True for content scripts running inside incognito tabs, and for extension pages running
      * inside an incognito process. The latter only applies to extensions with 'split'
@@ -82,34 +115,6 @@ export class Extension extends Base {
      */
     get lastError() {
         return this.$property('lastError');
-    }
-
-    /**
-     * Fired when a request is sent from either an extension process or a content script.
-     *
-     * @deprecated Deprecated, use `runtime.onMessage` instead.
-     *
-     * @see {@link https://developer.chrome.com/extensions/extension#event-onRequest}
-     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/extension/onRequest}
-     *
-     * @returns {Listener}
-     */
-    get onRequest() {
-        return this.$listener('onRequest');
-    }
-
-    /**
-     * Fired when a request is sent from another extension.
-     *
-     * @deprecated Deprecated, use `runtime.onMessageExternal` instead.
-     *
-     * @see {@link https://developer.chrome.com/extensions/extension#event-onRequestExternal}
-     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/extension/onRequestExternal}
-     *
-     * @returns {Listener}
-     */
-    get onRequestExternal() {
-        return this.$listener('onRequestExternal');
     }
 
     /**

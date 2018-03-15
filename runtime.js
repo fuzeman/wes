@@ -2,6 +2,7 @@ import IsNil from 'lodash/isNil';
 import RuntimeCompatibility from 'mdn-browser-compat-data/webextensions/api/runtime.json';
 
 import Base from './core/base';
+import Event from './core/event';
 import {Port} from './objects/port';
 
 
@@ -448,6 +449,156 @@ export class Runtime extends Base {
     static Name = 'runtime';
     static Compatibility = RuntimeCompatibility;
 
+    constructor(options = null) {
+        super(options);
+
+        // region Events
+
+        /**
+         * Fired when an update for the browser is available, but isn't installed immediately because a
+         * browser restart is required.
+         * &nbsp
+         * @deprecated Deprecated, use `runtime.onRestartRequired` instead.
+         *
+         * @see {@link https://developer.chrome.com/extensions/runtime#event-onBrowserUpdateAvailable}
+         * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onBrowserUpdateAvailable}
+         *
+         * @returns {Event} Listener that emits {@link browserUpdateAvailableEvent browserUpdateAvailable} events
+         */
+        this.onBrowserUpdateAvailable = new Event(this, 'onBrowserUpdateAvailable');
+
+        /**
+         * Fired when a connection is made with either an extension process or a content script.
+         *
+         * @see {@link https://developer.chrome.com/extensions/runtime#event-onConnect}
+         * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onConnect}
+         *
+         * @returns {Event} Listener that emits {@link connectEvent connect} events
+         */
+        this.onConnect = new Event(this, 'onConnect');
+
+        /**
+         * Fired when a connection is made with another extension.
+         * &nbsp
+         * To send a message which will be received by the {@link onConnectExternal} listener, use {@link connect},
+         * passing the ID of the recipient in the `extensionId` parameter.
+         * &nbsp
+         * The listener is passed a {@link Port} which it can then use to send and receive messages. The Port also
+         * contains a `sender` property, which is a {@link MessageSender} object, and which the recipient can use
+         * to check the sender's ID.
+         *
+         * @see {@link https://developer.chrome.com/extensions/runtime#event-onConnectExternal}
+         * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onConnectExternal}
+         *
+         * @returns {Event} Listener that emits {@link connectExternalEvent connectExternal} events
+         */
+        this.onConnectExternal = new Event(this, 'onConnectExternal');
+
+        /**
+         * Fired when the extension is first installed, when the extension is updated to a new version,
+         * and when the browser is updated to a new version.
+         * &nbsp
+         * Note that {@link onInstalled} is not the same as {@link Management#onInstalled}. The {@link onInstalled}
+         * event is fired only for your extension. The {@link Management#onInstalled} event is fired for any extensions.
+         *
+         * @see {@link https://developer.chrome.com/extensions/runtime#event-onInstalled}
+         * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onInstalled}
+         *
+         * @returns {Event} Listener that emits {@link installedEvent installed} events.
+         */
+        this.onInstalled = new Event(this, 'onInstalled');
+
+        /**
+         * Fired when a message is sent from either an extension process or a content script.
+         *
+         * @see {@link https://developer.chrome.com/extensions/runtime#event-onMessage}
+         * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onMessage}
+         *
+         * @returns {Event} Listener that emits {@link messageEvent message} events.
+         */
+        this.onMessage = new Event(this, 'onMessage');
+
+        /**
+         * Fired when a message is sent from another extension. Cannot be used in a content script.
+         *
+         * @see {@link https://developer.chrome.com/extensions/runtime#event-onMessageExternal}
+         * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onMessageExternal}
+         *
+         * @returns {Event} Listener that emits {@link messageExternalEvent messageExternal} events.
+         */
+        this.onMessageExternal = new Event(this, 'onMessageExternal');
+
+        /**
+         * Fired when an app or the device that it runs on needs to be restarted. The app should close all
+         * its windows at its earliest convenience to let the restart happen. If the app does nothing, a
+         * restart will be enforced after a 24-hour grace period has passed. Currently, this event is only
+         * fired for Chrome OS kiosk apps.
+         *
+         * @see {@link https://developer.chrome.com/extensions/runtime#event-onRestartRequired}
+         * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onRestartRequired}
+         *
+         * @returns {Event} Listener that emits {@link restartRequiredEvent restartRequired} events.
+         */
+        this.onRestartRequired = new Event(this, 'onRestartRequired');
+
+        /**
+         * Fired when a profile that has this extension installed first starts up. This event is not fired
+         * when a private browsing/incognito profile is started, even if this extension is operating in
+         * 'split' incognito mode.
+         *
+         * @see {@link https://developer.chrome.com/extensions/runtime#event-onStartup}
+         * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onStartup}
+         *
+         * @returns {Event} Listener that emits {@link startupEvent startup} events.
+         */
+        this.onStartup = new Event(this, 'onStartup');
+
+        /**
+         * Sent to the event page just before it is unloaded. This gives the extension an opportunity to
+         * do some cleanup. Note that since the page is unloading, any asynchronous operations started
+         * while handling this event are not guaranteed to complete.
+         *
+         * @see {@link https://developer.chrome.com/extensions/runtime#event-onSuspend}
+         * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onSuspend}
+         *
+         * @returns {Event} Listener that emits {@link suspendEvent suspend} events.
+         */
+        this.onSuspend = new Event(this, 'onSuspend');
+
+        /**
+         * Sent after {@link onSuspend} to indicate that the extension won't be unloaded after all.
+         *
+         * @see {@link https://developer.chrome.com/extensions/runtime#event-onSuspendCanceled}
+         * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onSuspendCanceled}
+         *
+         * @returns {Event} Listener that emits {@link suspendCanceledEvent suspendCanceled} events.
+         */
+        this.onSuspendCanceled = new Event(this, 'onSuspendCanceled');
+
+        /**
+         * Fired when an update to the extension is available. This event enables an extension to delay an
+         * update: for example, because it is in the middle of some operation which should not be interrupted.
+         * &nbsp
+         * If the extension is not listening for this event when an update becomes available, the extension is
+         * reloaded immediately and the update is applied. If the extension is listening, then the update will
+         * be applied the next time the extension is reloaded. This happens if:
+         * &nbsp
+         *  - the browser is restarted
+         * &nbsp
+         *  - the extension is disabled and re-enabled
+         * &nbsp
+         *  - the extension explicitly reloads itself by calling {@link reload}.
+         *
+         * @see {@link https://developer.chrome.com/extensions/runtime#event-onUpdateAvailable}
+         * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onUpdateAvailable}
+         *
+         * @returns {Event} Listener that emits {@link updateAvailableEvent updateAvailable} events.
+         */
+        this.onUpdateAvailable = new Event(this, 'onUpdateAvailable');
+
+        // endregion
+    }
+
     // region Properties
 
     /**
@@ -472,174 +623,6 @@ export class Runtime extends Base {
      */
     get lastError() {
         return this.$property('lastError');
-    }
-
-    // endregion
-
-    // region Events
-
-    /**
-     * Fired when an update for the browser is available, but isn't installed immediately because a
-     * browser restart is required.
-     * &nbsp
-     * @deprecated Deprecated, use `runtime.onRestartRequired` instead.
-     *
-     * @see {@link https://developer.chrome.com/extensions/runtime#event-onBrowserUpdateAvailable}
-     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onBrowserUpdateAvailable}
-     *
-     * @returns {Listener} Listener that emits {@link browserUpdateAvailableEvent browserUpdateAvailable} events
-     */
-    get onBrowserUpdateAvailable() {
-        return this.$listener('onBrowserUpdateAvailable');
-    }
-
-    /**
-     * Fired when a connection is made with either an extension process or a content script.
-     *
-     * @see {@link https://developer.chrome.com/extensions/runtime#event-onConnect}
-     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onConnect}
-     *
-     * @returns {Listener} Listener that emits {@link connectEvent connect} events
-     */
-    get onConnect() {
-        return this.$listener('onConnect');
-    }
-
-    /**
-     * Fired when a connection is made with another extension.
-     * &nbsp
-     * To send a message which will be received by the {@link onConnectExternal} listener, use {@link connect}, passing
-     * the ID of the recipient in the `extensionId` parameter.
-     * &nbsp
-     * The listener is passed a {@link Port} which it can then use to send and receive messages. The Port also contains
-     * a `sender` property, which is a {@link MessageSender} object, and which the recipient can use to check the
-     * sender's ID.
-     *
-     * @see {@link https://developer.chrome.com/extensions/runtime#event-onConnectExternal}
-     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onConnectExternal}
-     *
-     * @returns {Listener} Listener that emits {@link connectExternalEvent connectExternal} events
-     */
-    get onConnectExternal() {
-        return this.$listener('onConnectExternal');
-    }
-
-    /**
-     * Fired when the extension is first installed, when the extension is updated to a new version,
-     * and when the browser is updated to a new version.
-     * &nbsp
-     * Note that {@link onInstalled} is not the same as {@link Management#onInstalled}. The {@link onInstalled}
-     * event is fired only for your extension. The {@link Management#onInstalled} event is fired for any extensions.
-     *
-     * @see {@link https://developer.chrome.com/extensions/runtime#event-onInstalled}
-     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onInstalled}
-     *
-     * @returns {Listener} Listener that emits {@link installedEvent installed} events.
-     */
-    get onInstalled() {
-        return this.$listener('onInstalled');
-    }
-
-    /**
-     * Fired when a message is sent from either an extension process or a content script.
-     *
-     * @see {@link https://developer.chrome.com/extensions/runtime#event-onMessage}
-     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onMessage}
-     *
-     * @returns {Listener} Listener that emits {@link messageEvent message} events.
-     */
-    get onMessage() {
-        return this.$listener('onMessage');
-    }
-
-    /**
-     * Fired when a message is sent from another extension. Cannot be used in a content script.
-     *
-     * @see {@link https://developer.chrome.com/extensions/runtime#event-onMessageExternal}
-     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onMessageExternal}
-     *
-     * @returns {Listener} Listener that emits {@link messageExternalEvent messageExternal} events.
-     */
-    get onMessageExternal() {
-        return this.$listener('onMessageExternal');
-    }
-
-    /**
-     * Fired when an app or the device that it runs on needs to be restarted. The app should close all
-     * its windows at its earliest convenience to let the restart happen. If the app does nothing, a
-     * restart will be enforced after a 24-hour grace period has passed. Currently, this event is only
-     * fired for Chrome OS kiosk apps.
-     *
-     * @see {@link https://developer.chrome.com/extensions/runtime#event-onRestartRequired}
-     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onRestartRequired}
-     *
-     * @returns {Listener} Listener that emits {@link restartRequiredEvent restartRequired} events.
-     */
-    get onRestartRequired() {
-        return this.$listener('onRestartRequired');
-    }
-
-    /**
-     * Fired when a profile that has this extension installed first starts up. This event is not fired
-     * when a private browsing/incognito profile is started, even if this extension is operating in
-     * 'split' incognito mode.
-     *
-     * @see {@link https://developer.chrome.com/extensions/runtime#event-onStartup}
-     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onStartup}
-     *
-     * @returns {Listener} Listener that emits {@link startupEvent startup} events.
-     */
-    get onStartup() {
-        return this.$listener('onStartup');
-    }
-
-    /**
-     * Sent to the event page just before it is unloaded. This gives the extension an opportunity to
-     * do some cleanup. Note that since the page is unloading, any asynchronous operations started
-     * while handling this event are not guaranteed to complete.
-     *
-     * @see {@link https://developer.chrome.com/extensions/runtime#event-onSuspend}
-     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onSuspend}
-     *
-     * @returns {Listener} Listener that emits {@link suspendEvent suspend} events.
-     */
-    get onSuspend() {
-        return this.$listener('onSuspend');
-    }
-
-    /**
-     * Sent after {@link onSuspend} to indicate that the extension won't be unloaded after all.
-     *
-     * @see {@link https://developer.chrome.com/extensions/runtime#event-onSuspendCanceled}
-     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onSuspendCanceled}
-     *
-     * @returns {Listener} Listener that emits {@link suspendCanceledEvent suspendCanceled} events.
-     */
-    get onSuspendCanceled() {
-        return this.$listener('onSuspendCanceled');
-    }
-
-    /**
-     * Fired when an update to the extension is available. This event enables an extension to delay an
-     * update: for example, because it is in the middle of some operation which should not be interrupted.
-     * &nbsp
-     * If the extension is not listening for this event when an update becomes available, the extension is
-     * reloaded immediately and the update is applied. If the extension is listening, then the update will
-     * be applied the next time the extension is reloaded. This happens if:
-     * &nbsp
-     *  - the browser is restarted
-     * &nbsp
-     *  - the extension is disabled and re-enabled
-     * &nbsp
-     *  - the extension explicitly reloads itself by calling {@link reload}.
-     *
-     * @see {@link https://developer.chrome.com/extensions/runtime#event-onUpdateAvailable}
-     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/runtime/onUpdateAvailable}
-     *
-     * @returns {Listener} Listener that emits {@link updateAvailableEvent updateAvailable} events.
-     */
-    get onUpdateAvailable() {
-        return this.$listener('onUpdateAvailable');
     }
 
     // endregion

@@ -1,6 +1,7 @@
 import PermissionsCompatibility from 'mdn-browser-compat-data/webextensions/api/permissions.json';
 
 import Base from './core/base';
+import Event from './core/event';
 
 
 /**
@@ -83,28 +84,28 @@ export class Permissions extends Base {
     static Name = 'permissions';
     static Compatibility = PermissionsCompatibility;
 
-    /**
-     * Fired when the extension is granted new permissions.
-     *
-     * @see {@link https://developer.chrome.com/extensions/permissions#event-onAdded}
-     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/permissions/onAdded}
-     *
-     * @returns {Listener} Listener that emits {@link added} events
-     */
-    get onAdded() {
-        return this.$listener('onAdded');
-    }
+    constructor(options = null) {
+        super(options);
 
-    /**
-     * Fired when some permissions are removed from the extension.
-     *
-     * @see {@link https://developer.chrome.com/extensions/permissions#event-onRemoved}
-     * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/permissions/onRemoved}
-     *
-     * @returns {Listener} Listener that emits {@link removed} events
-     */
-    get onRemoved() {
-        return this.$listener('onRemoved');
+        /**
+         * Fired when the extension is granted new permissions.
+         *
+         * @see {@link https://developer.chrome.com/extensions/permissions#event-onAdded}
+         * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/permissions/onAdded}
+         *
+         * @returns {Event} Listener that emits {@link added} events
+         */
+        this.onAdded = new Event(this, 'onAdded');
+
+        /**
+         * Fired when some permissions are removed from the extension.
+         *
+         * @see {@link https://developer.chrome.com/extensions/permissions#event-onRemoved}
+         * @see {@link https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/permissions/onRemoved}
+         *
+         * @returns {Event} Listener that emits {@link removed} events
+         */
+        this.onRemoved = new Event(this, 'onRemoved');
     }
 
     /**
