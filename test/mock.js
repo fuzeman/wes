@@ -1,4 +1,12 @@
-export class MockListener {
+import Base from '../core/base';
+
+
+export class MockAPI extends Base {
+    static Title = 'Mock';
+    static Name = 'mock';
+}
+
+export class MockEvent {
     constructor() {
         this._listeners = [];
     }
@@ -17,6 +25,10 @@ export class MockListener {
         return this._listeners.indexOf(listener) >= 0;
     }
 
+    hasListeners() {
+        return this._listeners.length > 0;
+    }
+
     removeListener(listener) {
         let index = this._listeners.indexOf(listener);
 
@@ -27,3 +39,7 @@ export class MockListener {
         this._listeners.splice(index, 1);
     }
 }
+
+export {
+    MockEvent as MockListener
+};
