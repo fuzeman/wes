@@ -18,65 +18,67 @@ describe('Runtime', () => {
         let onUpdateAvailable = new MockListener();
 
         let runtime = new Runtime({
-            title: 'Chrome',
-            name: 'chrome',
-            version: '54.0',
+            browser: {
+                title: 'Chrome',
+                name: 'chrome',
+                version: '54.0',
 
-            promises: false,
+                promises: false,
 
-            namespace: {
-                runtime: {
-                    // region Properties
+                namespace: {
+                    runtime: {
+                        // region Properties
 
-                    id: 'wes',
-                    lastError: null,
+                        id: 'wes',
+                        lastError: null,
 
-                    // endregion
+                        // endregion
 
-                    // region Events
+                        // region Events
 
-                    onBrowserUpdateAvailable,
-                    onConnect,
-                    onConnectExternal,
-                    onInstalled,
-                    onMessage,
-                    onMessageExternal,
-                    onRestartRequired,
-                    onStartup,
-                    onSuspend,
-                    onSuspendCanceled,
-                    onUpdateAvailable,
+                        onBrowserUpdateAvailable,
+                        onConnect,
+                        onConnectExternal,
+                        onInstalled,
+                        onMessage,
+                        onMessageExternal,
+                        onRestartRequired,
+                        onStartup,
+                        onSuspend,
+                        onSuspendCanceled,
+                        onUpdateAvailable,
 
-                    // endregion
+                        // endregion
 
-                    // region Methods
+                        // region Methods
 
-                    connect: (extensionId, connectInfo) => ({ name: connectInfo.name, sender: { id: extensionId } }),
-                    connectNative: (application) => ({ name: application, sender: { id: application } }),
+                        connect: (extensionId, connectInfo) => ({name: connectInfo.name, sender: {id: extensionId}}),
+                        connectNative: (application) => ({name: application, sender: {id: application}}),
 
-                    getBackgroundPage: (callback) => callback('getBackgroundPage'),
-                    getManifest: () => 'getManifest',
-                    getPackageDirectoryEntry: (callback) => callback('getPackageDirectoryEntry'),
-                    getPlatformInfo: (callback) => callback('getPlatformInfo'),
-                    getURL: (path) => path,
+                        getBackgroundPage: (callback) => callback('getBackgroundPage'),
+                        getManifest: () => 'getManifest',
+                        getPackageDirectoryEntry: (callback) => callback('getPackageDirectoryEntry'),
+                        getPlatformInfo: (callback) => callback('getPlatformInfo'),
+                        getURL: (path) => path,
 
-                    openOptionsPage: (callback) => callback('openOptionsPage'),
-                    reload: () => true,
-                    requestUpdateCheck: (callback) => callback('requestUpdateCheck'),
-                    setUninstallURL: (url, callback) => callback(url),
+                        openOptionsPage: (callback) => callback('openOptionsPage'),
+                        reload: () => true,
+                        requestUpdateCheck: (callback) => callback('requestUpdateCheck'),
+                        setUninstallURL: (url, callback) => callback(url),
 
-                    sendMessage: (extensionId, message, options, callback) => callback({
-                        extensionId,
-                        message,
-                        options
-                    }),
+                        sendMessage: (extensionId, message, options, callback) => callback({
+                            extensionId,
+                            message,
+                            options
+                        }),
 
-                    sendNativeMessage: (application, message, callback) => callback({
-                        application,
-                        message
-                    })
+                        sendNativeMessage: (application, message, callback) => callback({
+                            application,
+                            message
+                        })
 
-                    // endregion
+                        // endregion
+                    }
                 }
             }
         });
@@ -281,15 +283,17 @@ describe('Runtime', () => {
 
             it('should return null if no port is returned', () => {
                 let runtime = new Runtime({
-                    title: 'Chrome',
-                    name: 'chrome',
-                    version: '54.0',
+                    browser: {
+                        title: 'Chrome',
+                        name: 'chrome',
+                        version: '54.0',
 
-                    promises: false,
+                        promises: false,
 
-                    namespace: {
-                        runtime: {
-                            connect: () => null
+                        namespace: {
+                            runtime: {
+                                connect: () => null
+                            }
                         }
                     }
                 });
@@ -311,15 +315,17 @@ describe('Runtime', () => {
 
             it('should return null if no port is returned', () => {
                 let runtime = new Runtime({
-                    title: 'Chrome',
-                    name: 'chrome',
-                    version: '54.0',
+                    browser: {
+                        title: 'Chrome',
+                        name: 'chrome',
+                        version: '54.0',
 
-                    promises: false,
+                        promises: false,
 
-                    namespace: {
-                        runtime: {
-                            connectNative: () => null
+                        namespace: {
+                            runtime: {
+                                connectNative: () => null
+                            }
                         }
                     }
                 });
@@ -341,7 +347,7 @@ describe('Runtime', () => {
                 runtime.getBrowserInfo().then(() => {
                     done.fail('Promise wasn\'t rejected');
                 }, (err) => {
-                    expect(err.message).toBe('Runtime API doesn\'t support "getBrowserInfo" (Not Implemented)');
+                    expect(err.message).toBe('runtime.getBrowserInfo is not available (not implemented)');
                     done();
                 });
             });
@@ -443,60 +449,69 @@ describe('Runtime', () => {
         let onUpdateAvailable = new MockListener();
 
         let runtime = new Runtime({
-            title: 'Firefox',
-            name: 'firefox',
-            version: '54.0',
+            browser: {
+                title: 'Firefox',
+                name: 'firefox',
+                version: '54.0',
 
-            promises: true,
+                promises: true,
 
-            namespace: {
-                runtime: {
-                    // region Properties
+                namespace: {
+                    runtime: {
+                        // region Properties
 
-                    id: 'wes',
-                    lastError: null,
+                        id: 'wes',
+                        lastError: null,
 
-                    // endregion
+                        // endregion
 
-                    // region Events
+                        // region Events
 
-                    onConnect,
-                    onConnectExternal,
-                    onInstalled,
-                    onMessage,
-                    onMessageExternal,
-                    onStartup,
-                    onUpdateAvailable,
+                        onConnect,
+                        onConnectExternal,
+                        onInstalled,
+                        onMessage,
+                        onMessageExternal,
+                        onStartup,
+                        onUpdateAvailable,
 
-                    // endregion
+                        // endregion
 
-                    // region Methods
+                        // region Methods
 
-                    connect: (extensionId, connectInfo) => ({ name: connectInfo.name, sender: { id: extensionId } }),
-                    connectNative: (application) => ({ name: application, sender: { id: application } }),
+                        connect: (extensionId, connectInfo) => ({
+                            name: connectInfo.name,
+                            sender: { id: extensionId }
+                        }),
 
-                    getBackgroundPage: () => Promise.resolve('getBackgroundPage'),
-                    getBrowserInfo: () => Promise.resolve('getBrowserInfo'),
-                    getManifest: () => 'getManifest',
-                    getPlatformInfo: () => Promise.resolve('getPlatformInfo'),
-                    getURL: (path) => path,
+                        connectNative: (application) => ({
+                            name: application,
+                            sender: { id: application }
+                        }),
 
-                    openOptionsPage: () => Promise.resolve('openOptionsPage'),
-                    reload: () => true,
-                    setUninstallURL: (url) => Promise.resolve(url),
+                        getBackgroundPage: () => Promise.resolve('getBackgroundPage'),
+                        getBrowserInfo: () => Promise.resolve('getBrowserInfo'),
+                        getManifest: () => 'getManifest',
+                        getPlatformInfo: () => Promise.resolve('getPlatformInfo'),
+                        getURL: (path) => path,
 
-                    sendMessage: (extensionId, message, options) => Promise.resolve({
-                        extensionId,
-                        message,
-                        options
-                    }),
+                        openOptionsPage: () => Promise.resolve('openOptionsPage'),
+                        reload: () => true,
+                        setUninstallURL: (url) => Promise.resolve(url),
 
-                    sendNativeMessage: (application, message) => Promise.resolve({
-                        application,
-                        message
-                    })
+                        sendMessage: (extensionId, message, options) => Promise.resolve({
+                            extensionId,
+                            message,
+                            options
+                        }),
 
-                    // endregion
+                        sendNativeMessage: (application, message) => Promise.resolve({
+                            application,
+                            message
+                        })
+
+                        // endregion
+                    }
                 }
             }
         });
@@ -522,7 +537,7 @@ describe('Runtime', () => {
         describe('onBrowserUpdateAvailable', () => {
             it('should throw an error from addListener(listener)', () => {
                 expect(() => runtime.onBrowserUpdateAvailable.addListener(() => false)).toThrowError(
-                    Error, 'Runtime API doesn\'t support "onBrowserUpdateAvailable" (Not Implemented)'
+                    Error, 'runtime.onBrowserUpdateAvailable is not available (not implemented)'
                 );
             });
         });
@@ -609,7 +624,7 @@ describe('Runtime', () => {
         describe('onRestartRequired', () => {
             it('should throw an error from addListener(listener)', () => {
                 expect(() => runtime.onRestartRequired.addListener(() => false)).toThrowError(
-                    Error, 'Runtime API doesn\'t support "onRestartRequired" (Not Implemented)'
+                    Error, 'runtime.onRestartRequired is not available (not implemented)'
                 );
             });
         });
@@ -631,7 +646,7 @@ describe('Runtime', () => {
         describe('onSuspend', () => {
             it('should throw an error from addListener(listener)', () => {
                 expect(() => runtime.onSuspend.addListener(() => false)).toThrowError(
-                    Error, 'Runtime API doesn\'t support "onSuspend" (Not Implemented)'
+                    Error, 'runtime.onSuspend is not available (not implemented)'
                 );
             });
         });
@@ -639,7 +654,7 @@ describe('Runtime', () => {
         describe('onSuspendCanceled', () => {
             it('should throw an error from addListener(listener)', () => {
                 expect(() => runtime.onSuspendCanceled.addListener(() => false)).toThrowError(
-                    Error, 'Runtime API doesn\'t support "onSuspendCanceled" (Not Implemented)'
+                    Error, 'runtime.onSuspendCanceled is not available (not implemented)'
                 );
             });
         });
@@ -676,15 +691,17 @@ describe('Runtime', () => {
 
             it('should return null if no port is returned', () => {
                 let runtime = new Runtime({
-                    title: 'Chrome',
-                    name: 'chrome',
-                    version: '54.0',
+                    browser: {
+                        title: 'Chrome',
+                        name: 'chrome',
+                        version: '54.0',
 
-                    promises: false,
+                        promises: false,
 
-                    namespace: {
-                        runtime: {
-                            connect: () => null
+                        namespace: {
+                            runtime: {
+                                connect: () => null
+                            }
                         }
                     }
                 });
@@ -706,15 +723,17 @@ describe('Runtime', () => {
 
             it('should return null if no port is returned', () => {
                 let runtime = new Runtime({
-                    title: 'Chrome',
-                    name: 'chrome',
-                    version: '54.0',
+                    browser: {
+                        title: 'Chrome',
+                        name: 'chrome',
+                        version: '54.0',
 
-                    promises: false,
+                        promises: false,
 
-                    namespace: {
-                        runtime: {
-                            connectNative: () => null
+                        namespace: {
+                            runtime: {
+                                connectNative: () => null
+                            }
                         }
                     }
                 });
@@ -751,7 +770,7 @@ describe('Runtime', () => {
                     done.fail('Promise wasn\'t rejected');
                 }, (err) => {
                     expect(err.message).toBe(
-                        'Runtime API doesn\'t support "getPackageDirectoryEntry" (Not Implemented)'
+                        'runtime.getPackageDirectoryEntry is not available (not implemented)'
                     );
 
                     done();
@@ -793,7 +812,7 @@ describe('Runtime', () => {
                     done.fail('Promise wasn\'t rejected');
                 }, (err) => {
                     expect(err.message).toBe(
-                        'Runtime API doesn\'t support "requestUpdateCheck" (Not Implemented)'
+                        'runtime.requestUpdateCheck is not available (not implemented)'
                     );
 
                     done();

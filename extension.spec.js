@@ -8,42 +8,44 @@ describe('Extension', () => {
         let onRequestExternal = new MockListener();
 
         let extension = new Extension({
-            title: 'Chrome',
-            name: 'chrome',
-            version: '54.0',
+            browser: {
+                title: 'Chrome',
+                name: 'chrome',
+                version: '54.0',
 
-            promises: false,
+                promises: false,
 
-            namespace: {
-                extension: {
-                    // region Properties
+                namespace: {
+                    extension: {
+                        // region Properties
 
-                    inIncognitoContext: true,
-                    lastError: null,
+                        inIncognitoContext: true,
+                        lastError: null,
 
-                    // endregion
+                        // endregion
 
-                    // region Events
+                        // region Events
 
-                    onRequest,
-                    onRequestExternal,
+                        onRequest,
+                        onRequestExternal,
 
-                    // endregion
+                        // endregion
 
-                    // region Methods
+                        // region Methods
 
-                    getBackgroundPage: () => 'getBackgroundPage',
-                    getExtensionTabs: (windowId) => windowId,
-                    getURL: (path) => path,
-                    getViews: (fetchProperties) => fetchProperties,
+                        getBackgroundPage: () => 'getBackgroundPage',
+                        getExtensionTabs: (windowId) => windowId,
+                        getURL: (path) => path,
+                        getViews: (fetchProperties) => fetchProperties,
 
-                    isAllowedFileSchemeAccess: (callback) => callback('isAllowedFileSchemeAccess'),
-                    isAllowedIncognitoAccess: (callback) => callback('isAllowedIncognitoAccess'),
+                        isAllowedFileSchemeAccess: (callback) => callback('isAllowedFileSchemeAccess'),
+                        isAllowedIncognitoAccess: (callback) => callback('isAllowedIncognitoAccess'),
 
-                    sendRequest: () => false,
-                    setUpdateUrlData: () => false
+                        sendRequest: () => false,
+                        setUpdateUrlData: () => false
 
-                    // endregion
+                        // endregion
+                    }
                 }
             }
         });
@@ -163,31 +165,33 @@ describe('Extension', () => {
 
     describe('Firefox', () => {
         let extension = new Extension({
-            title: 'Firefox',
-            name: 'firefox',
-            version: '54.0',
+            browser: {
+                title: 'Firefox',
+                name: 'firefox',
+                version: '54.0',
 
-            promises: true,
+                promises: true,
 
-            namespace: {
-                extension: {
-                    // region Properties
+                namespace: {
+                    extension: {
+                        // region Properties
 
-                    inIncognitoContext: true,
-                    lastError: null,
+                        inIncognitoContext: true,
+                        lastError: null,
 
-                    // endregion
+                        // endregion
 
-                    // region Methods
+                        // region Methods
 
-                    getBackgroundPage: () => 'getBackgroundPage',
-                    getURL: (path) => path,
-                    getViews: (fetchProperties) => fetchProperties,
+                        getBackgroundPage: () => 'getBackgroundPage',
+                        getURL: (path) => path,
+                        getViews: (fetchProperties) => fetchProperties,
 
-                    isAllowedFileSchemeAccess: () => Promise.resolve('isAllowedFileSchemeAccess'),
-                    isAllowedIncognitoAccess: () => Promise.resolve('isAllowedIncognitoAccess')
+                        isAllowedFileSchemeAccess: () => Promise.resolve('isAllowedFileSchemeAccess'),
+                        isAllowedIncognitoAccess: () => Promise.resolve('isAllowedIncognitoAccess')
 
-                    // endregion
+                        // endregion
+                    }
                 }
             }
         });
@@ -213,7 +217,7 @@ describe('Extension', () => {
         describe('onRequest', () => {
             it('should throw an error from addListener(listener)', () => {
                 expect(() => extension.onRequest.addListener(() => false)).toThrowError(
-                    Error, 'Extension API doesn\'t support "onRequest" (Not Implemented)'
+                    Error, 'extension.onRequest is not available (not implemented)'
                 );
             });
         });
@@ -221,7 +225,7 @@ describe('Extension', () => {
         describe('onRequestExternal', () => {
             it('should throw an error from addListener(listener)', () => {
                 expect(() => extension.onRequestExternal.addListener(() => false)).toThrowError(
-                    Error, 'Extension API doesn\'t support "onRequestExternal" (Not Implemented)'
+                    Error, 'extension.onRequestExternal is not available (not implemented)'
                 );
             });
         });
@@ -239,7 +243,7 @@ describe('Extension', () => {
         describe('getExtensionTabs', () => {
             it('should reject with unsupported error', () => {
                 expect(() => extension.getExtensionTabs(5)).toThrowError(
-                    Error, 'Extension API doesn\'t support "getExtensionTabs" (Not Implemented)'
+                    Error, 'extension.getExtensionTabs is not available (not implemented)'
                 );
             });
         });
@@ -277,7 +281,7 @@ describe('Extension', () => {
         describe('sendRequest', () => {
             it('should reject with unsupported error', () => {
                 expect(() => extension.sendRequest('extensionId', 'request', () => false)).toThrowError(
-                    Error, 'Extension API doesn\'t support "sendRequest" (Not Implemented)'
+                    Error, 'extension.sendRequest is not available (not implemented)'
                 );
             });
         });
@@ -285,7 +289,7 @@ describe('Extension', () => {
         describe('setUpdateUrlData', () => {
             it('should reject with unsupported error', () => {
                 expect(() => extension.setUpdateUrlData('url')).toThrowError(
-                    Error, 'Extension API doesn\'t support "setUpdateUrlData" (Not Implemented)'
+                    Error, 'extension.setUpdateUrlData is not available (not implemented)'
                 );
             });
         });

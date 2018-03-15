@@ -12,33 +12,35 @@ describe('Permissions', () => {
         };
 
         let chrome = new Permissions({
-            title: 'Chrome',
-            name: 'chrome',
-            version: '54.0',
+            browser: {
+                title: 'Chrome',
+                name: 'chrome',
+                version: '54.0',
 
-            promises: false,
+                promises: false,
 
-            namespace: {
-                runtime,
+                namespace: {
+                    runtime,
 
-                permissions: {
-                    onAdded,
-                    onRemoved,
+                    permissions: {
+                        onAdded,
+                        onRemoved,
 
-                    contains: (permissions, callback) => {
-                        callback(true);
-                    },
-                    getAll: (callback) => {
-                        callback({
-                            origins: ['https://google.com'],
-                            permissions: ['tabs']
-                        });
-                    },
-                    remove: (permissions, callback) => {
-                        callback(true);
-                    },
-                    request: (permissions, callback) => {
-                        callback(true);
+                        contains: (permissions, callback) => {
+                            callback(true);
+                        },
+                        getAll: (callback) => {
+                            callback({
+                                origins: ['https://google.com'],
+                                permissions: ['tabs']
+                            });
+                        },
+                        remove: (permissions, callback) => {
+                            callback(true);
+                        },
+                        request: (permissions, callback) => {
+                            callback(true);
+                        }
                     }
                 }
             }
@@ -118,13 +120,17 @@ describe('Permissions', () => {
 
     describe('Firefox 54', () => {
         let firefox54 = new Permissions({
-            title: 'Firefox',
-            name: 'firefox',
-            version: '54.0',
+            browser: {
+                title: 'Firefox',
+                name: 'firefox',
+                version: '54.0',
 
-            promises: true,
+                promises: true,
 
-            namespace: {}
+                namespace: {
+                    permissions: {}
+                }
+            }
         });
 
         describe('contains', () => {
@@ -132,7 +138,7 @@ describe('Permissions', () => {
                 firefox54.contains({}).then(() => {
                     done.fail('Promise wasn\'t rejected');
                 }, (err) => {
-                    expect(err.message).toBe('Permissions API is not available (Requires: Firefox >= 55)');
+                    expect(err.message).toBe('permissions.contains is not available (requires: firefox >= 55)');
                     done();
                 });
             });
@@ -141,28 +147,30 @@ describe('Permissions', () => {
 
     describe('Firefox 55', () => {
         let firefox55 = new Permissions({
-            title: 'Firefox',
-            name: 'firefox',
-            version: '55.0',
+            browser: {
+                title: 'Firefox',
+                name: 'firefox',
+                version: '55.0',
 
-            promises: true,
+                promises: true,
 
-            namespace: {
-                permissions: {
-                    contains: (permissions) => {
-                        return Promise.resolve(true);
-                    },
-                    getAll: () => {
-                        return Promise.resolve({
-                            origins: ['https://google.com'],
-                            permissions: ['tabs']
-                        });
-                    },
-                    remove: (permissions) => {
-                        return Promise.resolve(true);
-                    },
-                    request: (permissions) => {
-                        return Promise.resolve(true);
+                namespace: {
+                    permissions: {
+                        contains: (permissions) => {
+                            return Promise.resolve(true);
+                        },
+                        getAll: () => {
+                            return Promise.resolve({
+                                origins: ['https://google.com'],
+                                permissions: ['tabs']
+                            });
+                        },
+                        remove: (permissions) => {
+                            return Promise.resolve(true);
+                        },
+                        request: (permissions) => {
+                            return Promise.resolve(true);
+                        }
                     }
                 }
             }
