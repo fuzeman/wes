@@ -1,5 +1,5 @@
 import ContentScriptsCompatibility from 'mdn-browser-compat-data/webextensions/api/contentScripts.json';
-import IsNil from 'lodash/IsNil';
+import IsNil from 'lodash/isNil';
 
 import Base from './core/base';
 
