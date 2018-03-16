@@ -1,0 +1,113 @@
+{
+  "webextensions": {
+    "api": {
+      "declarativeContent": {
+        "RequestContentScript": {
+          "__compat": {
+            "support": {
+              "chrome": {
+                "version_added": true
+              },
+              "edge": {
+                "version_added": false
+              },
+              "firefox": {
+                "version_added": false
+              },
+              "firefox_android": {
+                "version_added": false
+              },
+              "opera": {
+                "version_added": true
+              }
+            }
+          }
+        },
+        "SetIcon": {
+          "__compat": {
+            "support": {
+              "chrome": {
+                "version_added": true
+              },
+              "edge": {
+                "version_added": false
+              },
+              "firefox": {
+                "version_added": false
+              },
+              "firefox_android": {
+                "version_added": false
+              },
+              "opera": {
+                "version_added": true
+              }
+            }
+          }
+        },
+        "ShowPageAction": {
+          "__compat": {
+            "support": {
+              "chrome": {
+                "version_added": true
+              },
+              "edge": {
+                "version_added": false
+              },
+              "firefox": {
+                "version_added": false
+              },
+              "firefox_android": {
+                "version_added": false
+              },
+              "opera": {
+                "version_added": true
+              }
+            }
+          }
+        },
+        "PageStateMatcher": {
+          "__compat": {
+            "support": {
+              "chrome": {
+                "version_added": true
+              },
+              "edge": {
+                "version_added": false
+              },
+              "firefox": {
+                "version_added": false
+              },
+              "firefox_android": {
+                "version_added": false
+              },
+              "opera": {
+                "version_added": true
+              }
+            }
+          }
+        },
+        "onPageChanged": {
+          "__compat": {
+            "support": {
+              "chrome": {
+                "version_added": true
+              },
+              "edge": {
+                "version_added": false
+              },
+              "firefox": {
+                "version_added": false
+              },
+              "firefox_android": {
+                "version_added": false
+              },
+              "opera": {
+                "version_added": true
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
