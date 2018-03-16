@@ -2,6 +2,7 @@
   "spec_dir": "./",
   "spec_files": [
     "core/{**/,}*spec.js",
+    "objects/{**/,}*spec.js",
     "test/{**/,}*spec.js",
     "*spec.js"
   ],
