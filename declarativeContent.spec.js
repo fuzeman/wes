@@ -344,23 +344,87 @@ describe('DeclarativeContent', () => {
                     });
                 });
 
-                it('should throw an error on invalid conditions', (done) => {
+                it('should throw an error on empty actions', (done) => {
                     declarativeContent.onPageChanged.addRules([{
-                        actions: [
-                            new ShowPageAction()
-                        ],
+                        actions: [],
                         conditions: [
-                            'error'
+                            new PageStateMatcher({
+                                pageUrl: { hostEquals: 'www.google.com', schemes: ['https'] },
+                                css: ['input[type="password"]']
+                            })
                         ]
                     }]).then(() => {
                         done.fail('Promise wasn\'t rejected');
                     }, (err) => {
-                        expect(err.message).toBe('Invalid condition: error');
+                        expect(err.message).toBe('At least one action is required');
+                        done();
+                    });
+                });
+
+                it('should throw an error on empty conditions', (done) => {
+                    declarativeContent.onPageChanged.addRules([{
+                        actions: [
+                            new ShowPageAction()
+                        ],
+                        conditions: []
+                    }]).then(() => {
+                        done.fail('Promise wasn\'t rejected');
+                    }, (err) => {
+                        expect(err.message).toBe('At least one condition is required');
+                        done();
+                    });
+                });
+
+                it('should throw an error on nil rule', (done) => {
+                    declarativeContent.onPageChanged.addRules([null]).then(() => {
+                        done.fail('Promise wasn\'t rejected');
+                    }, (err) => {
+                        expect(err.message).toBe('Invalid rule: null');
+                        done();
+                    });
+                });
+
+                it('should throw an error on invalid rule', (done) => {
+                    declarativeContent.onPageChanged.addRules([false]).then(() => {
+                        done.fail('Promise wasn\'t rejected');
+                    }, (err) => {
+                        expect(err.message).toBe('Invalid rule: false');
                         done();
                     });
                 });
 
                 it('should throw an error on invalid actions', (done) => {
+                    declarativeContent.onPageChanged.addRules([{
+                        actions: false,
+                        conditions: [
+                            new PageStateMatcher({
+                                pageUrl: { hostEquals: 'www.google.com', schemes: ['https'] },
+                                css: ['input[type="password"]']
+                            })
+                        ]
+                    }]).then(() => {
+                        done.fail('Promise wasn\'t rejected');
+                    }, (err) => {
+                        expect(err.message).toBe('Invalid actions: false');
+                        done();
+                    });
+                });
+
+                it('should throw an error on invalid conditions', (done) => {
+                    declarativeContent.onPageChanged.addRules([{
+                        actions: [
+                            new ShowPageAction()
+                        ],
+                        conditions: false
+                    }]).then(() => {
+                        done.fail('Promise wasn\'t rejected');
+                    }, (err) => {
+                        expect(err.message).toBe('Invalid conditions: false');
+                        done();
+                    });
+                });
+
+                it('should throw an error on invalid action', (done) => {
                     declarativeContent.onPageChanged.addRules([{
                         actions: [
                             'error'
@@ -375,6 +439,22 @@ describe('DeclarativeContent', () => {
                         done.fail('Promise wasn\'t rejected');
                     }, (err) => {
                         expect(err.message).toBe('Invalid action: error');
+                        done();
+                    });
+                });
+
+                it('should throw an error on invalid condition', (done) => {
+                    declarativeContent.onPageChanged.addRules([{
+                        actions: [
+                            new ShowPageAction()
+                        ],
+                        conditions: [
+                            'error'
+                        ]
+                    }]).then(() => {
+                        done.fail('Promise wasn\'t rejected');
+                    }, (err) => {
+                        expect(err.message).toBe('Invalid condition: error');
                         done();
                     });
                 });
