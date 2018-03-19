@@ -1,3 +1,5 @@
+import IsNil from 'lodash/isNil';
+import IsPlainObject from 'lodash/isPlainObject';
 import Map from 'lodash/map';
 
 import Base from './core/base';
@@ -67,25 +69,47 @@ class DeclarativeContentEvent extends DeclarativeEvent {
     }
 
     _createRules(rules) {
-        return Promise.resolve().then(() => Map(rules, (rule) => ({
-            // Create actions
-            actions: Map(rule.actions || [], (action) => {
-                if(!(action instanceof Action)) {
-                    throw new Error(`Invalid action: ${action}`);
-                }
+        return Promise.resolve().then(() => Map(rules, (rule) => {
+            if(IsNil(rule) || !IsPlainObject(rule)) {
+                throw new Error(`Invalid rule: ${rule}`);
+            }
 
-                return action.$create(this.$api);
-            }),
+            if(IsNil(rule.actions) || !Array.isArray(rule.actions)) {
+                throw new Error(`Invalid actions: ${rule.actions}`);
+            }
 
-            // Create conditions
-            conditions: Map(rule.conditions || [], (condition) => {
-                if(!(condition instanceof Condition)) {
-                    throw new Error(`Invalid condition: ${condition}`);
-                }
+            if(IsNil(rule.conditions) || !Array.isArray(rule.conditions)) {
+                throw new Error(`Invalid conditions: ${rule.conditions}`);
+            }
 
-                return condition.$create(this.$api);
-            })
-        })));
+            if(rule.actions.length < 1) {
+                throw new Error('At least one action is required');
+            }
+
+            if(rule.conditions.length < 1) {
+                throw new Error('At least one condition is required');
+            }
+
+            return {
+                // Create actions
+                actions: Map(rule.actions, (action) => {
+                    if(!(action instanceof Action)) {
+                        throw new Error(`Invalid action: ${action}`);
+                    }
+
+                    return action.$create(this.$api);
+                }),
+
+                // Create conditions
+                conditions: Map(rule.conditions, (condition) => {
+                    if(!(condition instanceof Condition)) {
+                        throw new Error(`Invalid condition: ${condition}`);
+                    }
+
+                    return condition.$create(this.$api);
+                })
+            };
+        }));
     }
 }
 
