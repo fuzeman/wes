@@ -49,7 +49,6 @@
     ".eslintignore",
     ".eslintrc",
     "lib",
-
     "{core/,objects/,test/,}*.{js,json}"
   ],
   "scripts": {
@@ -73,7 +72,6 @@
     ],
     "exclude": [
       "{**/,}*.spec.js",
-
       "coverage",
       "lib",
       "node_modules",
