@@ -113,10 +113,10 @@ export default class Base {
         let namespace = this.$namespace;
 
         if(IsNil(namespace)) {
-            return {};
+            return null;
         }
 
-        return namespace[this.$name] || {};
+        return namespace[this.$name] || null;
     }
 
     set $target(target) {

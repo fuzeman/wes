@@ -262,7 +262,7 @@ export class Storage extends Base {
          *
          * @returns {StorageArea}
          */
-        this.local = new StorageArea(this.$target.local);
+        this.local = new StorageArea(this.$target && this.$target.local);
 
         /**
          * Represents the managed storage area. Items in managed storage are set by the domain administrator or other
@@ -274,7 +274,7 @@ export class Storage extends Base {
          *
          * @returns {StorageArea}
          */
-        this.managed = new StorageArea(this.$target.managed);
+        this.managed = new StorageArea(this.$target && this.$target.managed);
 
         /**
          * Represents the sync storage area. Items in sync storage are synced by the browser, and are available across
@@ -293,7 +293,7 @@ export class Storage extends Base {
          *
          * @returns {StorageArea}
          */
-        this.sync = new StorageArea(this.$target.sync);
+        this.sync = new StorageArea(this.$target && this.$target.sync);
 
         // endregion
 
