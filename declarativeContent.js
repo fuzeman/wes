@@ -1,6 +1,7 @@
 import IsNil from 'lodash/isNil';
 import IsPlainObject from 'lodash/isPlainObject';
 import Map from 'lodash/map';
+import Pick from 'lodash/pick';
 
 import Base from './core/base';
 import DeclarativeContentCompatibility from './declarativeContent.json';
@@ -91,6 +92,12 @@ class DeclarativeContentEvent extends DeclarativeEvent {
             }
 
             return {
+                ...Pick(rule, [
+                    'id',
+                    'priority',
+                    'tags'
+                ]),
+
                 // Create actions
                 actions: Map(rule.actions, (action) => {
                     if(!(action instanceof Action)) {
