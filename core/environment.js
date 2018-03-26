@@ -1,4 +1,4 @@
-/* globals chrome, browser */
+/* globals window */
 import Bowser from 'bowser';
 import IsNil from 'lodash/isNil';
 

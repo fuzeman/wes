@@ -16,7 +16,7 @@ describe('Environment', () => {
                 });
 
                 it('should throw error', () => {
-                    expect(() => Browsers.chrome.namespace()).toThrowError(ReferenceError, 'chrome is not defined');
+                    expect(() => Browsers.chrome.namespace()).toThrowError(ReferenceError, 'window is not defined');
                 });
             });
         });
@@ -32,7 +32,7 @@ describe('Environment', () => {
                 });
 
                 it('should throw error', () => {
-                    expect(() => Browsers.firefox.namespace()).toThrowError(ReferenceError, 'browser is not defined');
+                    expect(() => Browsers.firefox.namespace()).toThrowError(ReferenceError, 'window is not defined');
                 });
             });
         });
