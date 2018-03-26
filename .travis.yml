@@ -13,10 +13,9 @@ script:
 - npm run test
 after_success:
 - npm run es6:coveralls
-before_deploy:
-- npm install
 deploy:
   provider: npm
+  skip_cleanup: true
   email: neapp-ci@me.dgardiner.net
   api_key:
     secure: dnTlCCIG/V/GuCWnebTS81hk6yKjPJXB4iK1deMRg/3TPX5C4I2SEg3hUlJ+I11Pdpy9txGgsZ4LGetGJWqqce0CdL/MojhynNYSrylhvDmpA/nkISfKfuosyfc4acdEMvLAOrXucaNV7J5h9Y40wQpm700kPnPTdU3WnvzwhZNX4mqnUvVOkYhzREWIf/JM2iZ8uyC9baS4QCMFiQMkSg+M630Ipz+Oq38tniZD1lb2pXvn+ptgMsSc+MCnh96PEibzW7D5aMeDrt/XrKWQ+EzgCN8so2lSPXpnAjJunQsR9cLkJzK62fNuzW0CdsLiWHYXo84GCkJ2qD8Vcki7reP8Vy7GY0sGmmmedbpfOMyAVhOBoS//mNhjBC9zVTAecUlVznCXk2eT770nUxgM8wefJaXs5Rf0MNxKB2eH0jMn+VBa04riutHq3lg6hDtPSN0y33cv5iAjLLIz5HyZsn/fgZ6OvGbor++hmcrknpy2u/dLudhNx6PirvnC458NFCGBB9Tn5VwSwIUdLdJ//Jn95GLi0/UCWigOxiWa1tt7uoLTmIKLLpCmI24ZYF+kI/VdSvfIpc0yMbOTcVBhreHcR8P1VgJLMGHzSaiWVibeXM6Pv1l1AX45b4prWSJUV50YlNN7Md2Ba+5gZhUKvyzg7RfSzSA5ifbLl+1KetI=
