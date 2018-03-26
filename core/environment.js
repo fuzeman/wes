@@ -8,14 +8,14 @@ export const Browsers = {
         name: 'chrome',
         title: 'Chrome',
 
-        namespace: () => chrome,
+        namespace: () => window.chrome,
         promises: false
     },
     firefox: {
         name: 'firefox',
         title: 'Firefox',
 
-        namespace: () => browser,
+        namespace: () => window.browser,
         promises: true
     }
 };
