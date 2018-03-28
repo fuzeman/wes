@@ -1,4 +1,4 @@
-/* globals window */
+/* globals browser, chrome */
 import Bowser from 'bowser';
 import IsNil from 'lodash/isNil';
 
@@ -8,14 +8,14 @@ export const Browsers = {
         name: 'chrome',
         title: 'Chrome',
 
-        namespace: () => window.chrome,
+        namespace: () => chrome,
         promises: false
     },
     firefox: {
         name: 'firefox',
         title: 'Firefox',
 
-        namespace: () => window.browser,
+        namespace: () => browser,
         promises: true
     }
 };

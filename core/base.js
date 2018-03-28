@@ -85,7 +85,11 @@ export default class Base {
         }
 
         if(IsFunction(this.$browser.namespace)) {
-            return this.$browser.namespace();
+            try {
+                this.$browser.namespace = this.$browser.namespace();
+            } catch(e) {
+                console.warn('Unable to resolve namespace:', e);
+            }
         }
 
         return this.$browser.namespace;
