@@ -254,11 +254,11 @@ export default class Base {
 
             // Deprecated
             if(status.deprecated) {
-                console.warn(`[${path}] Deprecated`);
+                console.warn(`[Deprecation] ${path} is deprecated`);
             }
 
             if(status.experimental) {
-                console.warn(`[${path}] Experimental`);
+                console.warn(`[Experiment] ${path} is experimental, it may be changed or removed at any time`);
             }
 
             // Defined
