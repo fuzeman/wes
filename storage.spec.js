@@ -128,11 +128,11 @@ describe('StorageArea', () => {
 
     describe('Firefox', () => {
         let area = new StorageArea({
-            clear: () => true,
-            get: (keys) => ({ keys }),
-            getBytesInUse: (keys) => ({ keys }),
-            remove: (keys) => ({ keys }),
-            set: (keys) => ({ keys })
+            clear: () => Promise.resolve(true),
+            get: (keys) => Promise.resolve({ keys }),
+            getBytesInUse: (keys) => Promise.resolve({ keys }),
+            remove: (keys) => Promise.resolve({ keys }),
+            set: (keys) => Promise.resolve({ keys })
         }, {
             browser: {
                 title: 'Firefox',

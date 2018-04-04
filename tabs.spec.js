@@ -878,8 +878,8 @@ describe('Tabs', () => {
                     tabs: {
                         // region Methods
 
-                        captureTab: (tabId, options) => ({ tabId, options }),
-                        captureVisibleTab: (windowId, options) => ({ windowId, options }),
+                        captureTab: (tabId, options) => Promise.resolve({ tabId, options }),
+                        captureVisibleTab: (windowId, options) => Promise.resolve({ windowId, options }),
 
                         connect: (tabId, connectInfo) => ({
                             name: connectInfo.name,
@@ -890,33 +890,33 @@ describe('Tabs', () => {
                             }
                         }),
 
-                        create: (createProperties) => ({ createProperties }),
-                        detectLanguage: (tabId) => ({ tabId }),
-                        discard: (tabIds) => ({ tabIds }),
-                        duplicate: (tabId) => ({ tabId }),
-                        executeScript: (tabId, details) => ({ tabId, details }),
+                        create: (createProperties) => Promise.resolve({ createProperties }),
+                        detectLanguage: (tabId) => Promise.resolve({ tabId }),
+                        discard: (tabIds) => Promise.resolve({ tabIds }),
+                        duplicate: (tabId) => Promise.resolve({ tabId }),
+                        executeScript: (tabId, details) => Promise.resolve({ tabId, details }),
 
-                        get: (tabId) => ({ tabId }),
-                        getAllInWindow: (windowId) => ({ windowId }),
-                        getCurrent: () => true,
-                        getZoom: (tabId) => ({ tabId }),
-                        getZoomSettings: (tabId) => ({ tabId }),
+                        get: (tabId) => Promise.resolve({ tabId }),
+                        getAllInWindow: (windowId) => Promise.resolve({ windowId }),
+                        getCurrent: () => Promise.resolve(true),
+                        getZoom: (tabId) => Promise.resolve({ tabId }),
+                        getZoomSettings: (tabId) => Promise.resolve({ tabId }),
 
-                        hide: (tabIds) => ({ tabIds }),
-                        insertCSS: (tabId, details) => ({ tabId, details }),
-                        move: (tabIds, moveProperties) => ({ tabIds, moveProperties }),
+                        hide: (tabIds) => Promise.resolve({ tabIds }),
+                        insertCSS: (tabId, details) => Promise.resolve({ tabId, details }),
+                        move: (tabIds, moveProperties) => Promise.resolve({ tabIds, moveProperties }),
                         print: () => true,
-                        printPreview: () => true,
-                        query: (queryInfo) => ({ queryInfo }),
-                        reload: (tabId, reloadProperties) => ({ tabId, reloadProperties }),
-                        remove: (tabIds) => ({ tabIds }),
-                        removeCSS: (tabId, details) => ({ tabId, details }),
-                        saveAsPDF: (pageSettings) => ({ pageSettings }),
-                        sendMessage: (tabId, message, options) => ({ tabId, message, options }),
-                        setZoom: (tabId, zoomFactor) => ({ tabId, zoomFactor }),
-                        show: (tabIds) => ({ tabIds }),
-                        toggleReaderMode: (tabId) => ({ tabId }),
-                        update: (tabId, updateProperties) => ({ tabId, updateProperties })
+                        printPreview: () => Promise.resolve(true),
+                        query: (queryInfo) => Promise.resolve({ queryInfo }),
+                        reload: (tabId, reloadProperties) => Promise.resolve({ tabId, reloadProperties }),
+                        remove: (tabIds) => Promise.resolve({ tabIds }),
+                        removeCSS: (tabId, details) => Promise.resolve({ tabId, details }),
+                        saveAsPDF: (pageSettings) => Promise.resolve({ pageSettings }),
+                        sendMessage: (tabId, message, options) => Promise.resolve({ tabId, message, options }),
+                        setZoom: (tabId, zoomFactor) => Promise.resolve({ tabId, zoomFactor }),
+                        show: (tabIds) => Promise.resolve({ tabIds }),
+                        toggleReaderMode: (tabId) => Promise.resolve({ tabId }),
+                        update: (tabId, updateProperties) => Promise.resolve({ tabId, updateProperties })
 
                         // endregion
                     }

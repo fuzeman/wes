@@ -6,6 +6,7 @@ import IsNil from 'lodash/isNil';
 import IsString from 'lodash/isString';
 import IsUndefined from 'lodash/isUndefined';
 
+import Deferred from './deferred';
 import {Browser} from './environment';
 
 
@@ -321,24 +322,35 @@ export default class Base {
 
     $promise(name, ...args) {
         if(this.$browser.promises) {
-            return Promise.resolve().then(() =>
-                this.$call(name, ...args)
-            );
+            try {
+                return this.$call(name, ...args);
+            } catch(e) {
+                return Promise.reject(e);
+            }
         }
 
         // Convert callback function to promise
-        return new Promise((resolve, reject) => {
-            this.$call(name, ...args, (...result) => {
-                if(!IsNil(this.$lastError)) {
-                    // Reject promise with `runtime.lastError`
-                    reject(new Error(this.$lastError.message || 'Unknown Error'));
-                    return;
-                }
+        let deferred = Deferred();
+        let self = this;
 
-                // Resolve promise
-                resolve(...result);
-            });
-        });
+        function callback(...result) {
+            if(!IsNil(self.$lastError)) {
+                // Reject promise with `runtime.lastError`
+                deferred.reject(new Error(self.$lastError.message || 'Unknown Error'));
+                return;
+            }
+
+            // Resolve promise
+            deferred.resolve(...result);
+        }
+
+        try {
+            this.$call(name, ...args, callback);
+        } catch(e) {
+            deferred.reject(e);
+        }
+
+        return deferred;
     }
 
     $property(name) {

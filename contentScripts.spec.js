@@ -82,7 +82,7 @@ describe('ContentScripts', () => {
 
                 namespace: {
                     contentScripts: {
-                        register: (contentScriptOptions) => contentScriptOptions
+                        register: (contentScriptOptions) => Promise.resolve(contentScriptOptions)
                     }
                 }
             }
