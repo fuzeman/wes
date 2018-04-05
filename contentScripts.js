@@ -130,6 +130,16 @@ export class ContentScripts extends Base {
      *                    can use to unregister the content script.
      */
     register(contentScriptOptions) {
+        if(!IsNil(contentScriptOptions)) {
+            // Set default options
+            contentScriptOptions = {
+                runAt: 'document_idle',  // Fix https://bugzil.la/1429425 on Firefox 59
+
+                ...contentScriptOptions
+            };
+        }
+
+        // Register content script
         return this.$promise('register', contentScriptOptions).then((instance) => {
             if(IsNil(instance)) {
                 return null;
