@@ -17,6 +17,13 @@ export const Browsers = {
 
         namespace: () => browser,
         promises: true
+    },
+    opera: {
+        name: 'opera',
+        title: 'Opera',
+
+        namespace: () => chrome,
+        promises: false
     }
 };
 
@@ -27,6 +34,10 @@ export function getBrowserName(bowser) {
 
     if(bowser.firefox) {
         return 'firefox';
+    }
+
+    if(bowser.opera) {
+        return 'opera';
     }
 
     return null;
