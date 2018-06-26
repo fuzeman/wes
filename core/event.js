@@ -46,9 +46,10 @@ export default class Event extends Base {
      * @see {@link https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/events/Event/addListener}
      *
      * @param {Function} callback Event listener
+     * @param {Array} args Arguments
      */
-    addListener(callback) {
-        this.$call('addListener', callback);
+    addListener(callback, ...args) {
+        this.$call('addListener', callback, ...args);
     }
 
     /**
