@@ -1,7 +1,7 @@
 {
   "name": "wes",
   "version": "1.0.0",
-  "description": "WebExtension Shim (Alpha)",
+  "description": "WebExtension Shim",
   "keywords": [
     "webextensions",
     "webextension",
