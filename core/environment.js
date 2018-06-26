@@ -51,3 +51,6 @@ export const Browser = !IsNil(current) ? {
 
     version: Bowser.version
 } : null;
+
+// Export browser as default
+export default Browser;
