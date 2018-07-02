@@ -65,6 +65,48 @@ describe('Event', () => {
                 onAdded.emit('event');
             });
 
+            it('should handle namespace changes', (done) => {
+                let onAdded = new MockEvent();
+
+                let namespace = {
+                    mock: {}
+                };
+
+                let api = new MockAPI({
+                    browser: {
+                        title: 'Chrome',
+                        name: 'chrome',
+                        version: '54.0',
+
+                        promises: false,
+
+                        namespace
+                    },
+                    compatibility: {
+                        webextensions: {
+                            api: {
+                                mock: compatibility
+                            }
+                        }
+                    }
+                });
+
+                // Create event wrapper
+                let event = new Event(api, 'onAdded');
+
+                // Add event to namespace
+                namespace.mock.onAdded = onAdded;
+
+                // Add listener
+                event.addListener((result) => {
+                    expect(result).toBe('event');
+                    done();
+                });
+
+                // Emit event
+                onAdded.emit('event');
+            });
+
             it('should handle an undefined api', () => {
                 let api = new MockAPI({
                     browser: {

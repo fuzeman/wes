@@ -25,18 +25,22 @@ export default class Event extends Base {
             ...(options || {})
         });
 
-        this.$api = api;
+        this._api = api;
+        this._key = name;
 
         // Create title
         this.$title = `${api.$title}.${name}`;
 
         // Create name
         this.$name = `${api.$name}.${name}`;
+    }
 
-        // Retrieve target event (if defined)
-        if(!IsNil(api.$target)) {
-            this.$target = api.$target[name] || null;
+    get $target() {
+        if(IsNil(this._api.$target)) {
+            return null;
         }
+
+        return this._api.$target[this._key] || null;
     }
 
     /**

@@ -104,7 +104,7 @@ class DeclarativeContentEvent extends DeclarativeEvent {
                         throw new Error(`Invalid action: ${action}`);
                     }
 
-                    return action.$create(this.$api);
+                    return action.$create(this._api);
                 }),
 
                 // Create conditions
@@ -113,7 +113,7 @@ class DeclarativeContentEvent extends DeclarativeEvent {
                         throw new Error(`Invalid condition: ${condition}`);
                     }
 
-                    return condition.$create(this.$api);
+                    return condition.$create(this._api);
                 })
             };
         }));
